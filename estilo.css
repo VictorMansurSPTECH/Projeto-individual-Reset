@@ -58,7 +58,7 @@ body{
     height: 110vh;
     width: 120vw;
     background-image: url(./imagens/concept-art-592f1adeb102b.jpg);
-    background-size: 100%;
+    background-size: cover;
     background-repeat: no-repeat;
 }
 /* CORPO DA HOME */
