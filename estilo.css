@@ -23,7 +23,7 @@ body{
 }
 .navegacaoSite{
     display: flex;
-    height: 10%;
+    height: 11vh;
     width: 50%;
     padding: 20px;
     margin-top: 10px;
@@ -33,13 +33,12 @@ body{
     
 }
 .botoes_header {
-    
     text-decoration: none;
     background: none;       /* Remove o fundo padrão do botão */
     border: none;           /* Remove a borda padrão */
     border-bottom: 4.5px solid transparent; /* Cria nossa borda personalizada invisível */
     color: #ffffff;
-    font-size: 18px;
+    font-size: 20px;
     font-family: "Nunito Sans";
     cursor: pointer;        /* Deixa o cursor em formato de clique */
     padding-bottom: 4px;
@@ -71,5 +70,20 @@ body{
     background-image: url(./imagens/concept-art-592f1adeb102b.jpg);
     background-size: cover;
     background-repeat: no-repeat;
+}
+
+.sobreamento_lateral{
+  height: 120vh;
+  width: 30%; 
+  background: linear-gradient(
+    to right, 
+    rgba(14, 14, 17, 1) 0%,      
+    rgba(14, 14, 17, 0.8) 40%,  
+    rgba(14, 14, 17, 0) 100%    
+
+    /* foi usado assitencia de Ia para esse degradê */
+  );
+  
+  pointer-events: none;
 }
 /* CORPO DA HOME */
