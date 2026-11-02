@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+
+/* PÁGINA HOME */
+
+/* SECÇÃO HEADER */
+body{
+    zoom: 0.85;
+}
+.corpo_header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    width: 100%;
+    background-color: #000000;
+}
+.navegacaoSite{
+    display: flex;
+    height: 100%;
+    width: 60%;
+    padding: 20px;
+    margin-top: 10px;
+    justify-content: space-between;
+    align-items: center;
+    background-color:transparent;
+    
+}
+.botoes_header {
+    
+    text-decoration: none;
+    background: none;       /* Remove o fundo padrão do botão */
+    border: none;           /* Remove a borda padrão */
+    border-bottom: 4.5px solid transparent; /* Cria nossa borda personalizada invisível */
+    color: #ffffff;
+    font-size: 18px;
+    font-family: "Nunito Sans";
+    cursor: pointer;        /* Deixa o cursor em formato de clique */
+    padding-bottom: 4px;
+    transition: border-color 0.2s ease;
+}
+.botoes_header:hover {
+  border-color: #FF6A13; /* Mostra a faixa laranja ao passar o mouse */
+}
+
+/* SECÇÃO HEADER */
+
+/* CORPO DA HOME */
+.corpo_home{
+    display: flex;
+    background-color:violet ;
+    height: 110vh;
+    width: 120vw;
+    background-image: url(./imagens/concept-art-592f1adeb102b.jpg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+/* CORPO DA HOME */
