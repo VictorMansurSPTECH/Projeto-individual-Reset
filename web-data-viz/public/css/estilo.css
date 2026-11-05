@@ -300,5 +300,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-radius: 100%;
   background-color: #d9d9d98a;
   background-image: url(../assets/imgs/crash\ Login.jpeg);
-  background-size: cover;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
