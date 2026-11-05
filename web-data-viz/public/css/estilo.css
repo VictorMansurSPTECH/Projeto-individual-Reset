@@ -204,7 +204,10 @@ body{
   padding: 30px;
   
 }
-
+.campo_de_dados h1{
+  color: #ffffff;
+  font-family: "Nunito Sans";
+}
 .campo_de_inputs{
   display: flex;
   height: 70px;
@@ -212,6 +215,7 @@ body{
   background-color: #ffff;
   align-items: center;
   border-radius: 15px;
+  padding: 5px;
   
   
 }
@@ -226,8 +230,10 @@ input[type="date"] {
   background-color:  #ffffff; /* Ajuste conforme o tema do seu Figma */
   border: 1px solid #333333;
   border-radius: 15px;
+  border: none;
   color:  #000000;
-  font-size: 14px;
+  font-size: 18px;
+  font-family: "Poppins";
 }
 
 input::placeholder {
@@ -237,6 +243,11 @@ input::placeholder {
 input:focus {
   outline: none;
 }
+.svg_campos{
+  height: 20px;
+  width: 20px;
+  background-size: cover;
+}
 
 .botoes_cadastro_login {
   display: flex;
@@ -244,8 +255,7 @@ input:focus {
   width: 520px;
   color: #000000;
   text-decoration: none;
-  background: #ff6a13;
-  opacity: 85%;
+  background: #FF6A13;
   border: none;
   text-align: center;
   align-items: center;
@@ -261,6 +271,6 @@ input:focus {
 
 .botoes_cadastro_login:hover {
   background-color: #ff6a13;
-  opacity: 100%;
-  color: #000000;
+  opacity: 85%;
+  
 }
