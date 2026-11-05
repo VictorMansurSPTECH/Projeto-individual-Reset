@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-/* FONTES E CONFIGURACOES GERAIS */
+/* ==================== FONTES E CONFIGURACOES GERAIS ==================== */
 @font-face {
 
   font-family: 'Nico Moji';
@@ -23,7 +23,7 @@ body{
 }
 
 
-/* CABECALHO E NAVEGACAO */
+/* ==================== CABECALHO E NAVEGACAO ==================== */
 .corpo_header {
   display: flex;
   justify-content: space-between;
@@ -85,7 +85,7 @@ body{
   border-radius: 80%;
 }
 
-/* PAGINA HOME */
+/* ==================== PAGINA HOME ==================== */
 .corpo_base {
   display: flex;
   height: 120vh;
@@ -183,7 +183,7 @@ body{
   );
   pointer-events: none;
 }
-/* PAGINA DE CADASTRO e Login*/
+/* ==================== PAGINAS DE CADASTRO E LOGIN ==================== */
 .corpo_cadastro {
   display: flex;
   height: 120vh;
@@ -195,7 +195,7 @@ body{
   align-items: center;
 }
 
-/* CARTAO E CAMPOS DO CADASTRO */
+/* ==================== CARTAO E CAMPOS ==================== */
 .campo_de_dados{
   position: relative;
   display: flex;
@@ -226,8 +226,8 @@ body{
   
   
 }
-/* CAMPOS DE INPUT */
-  /* Trecho gerado por IA  e modificado por mim*/
+/* ==================== CAMPOS DE INPUT ==================== */
+/* Trecho gerado por IA e modificado por mim */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -251,14 +251,14 @@ input::placeholder {
 input:focus {
   outline: none;
 }
-/* ICONES DOS CAMPOS */
+/* ==================== ICONES DOS CAMPOS ==================== */
 .svg_campos{
   height: 20px;
   width: 20px;
   background-size: cover;
 }
 
-/* BOTOES DE CADASTRO E LOGIN */
+/* ==================== BOTOES DE CADASTRO E LOGIN ==================== */
 .botoes_cadastro_login {
   display: flex;
   height: 50px;
@@ -285,15 +285,15 @@ input:focus {
   
 }
 
-/* retirando o icon nativo do tipo date usando IA */
+/* ==================== CALENDARIO DO CAMPO DE DATA ==================== */
+/* Retirando o icone nativo do tipo date com IA */
 input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
   -webkit-appearance: none;
 }
 
 
-/* Login */
-
+/* ==================== IMAGEM DO LOGIN ==================== */
 .img_login{
   height: 300px;
   width: 300px;
