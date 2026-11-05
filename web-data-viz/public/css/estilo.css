@@ -237,7 +237,7 @@ input[type="date"] {
   border: 1px solid #333333;
   border-radius: 15px;
   border: none;
-  color:  #000000;
+  color:  #141212;
   font-size: 18px;
   font-family: "Poppins";
 }
@@ -281,4 +281,10 @@ input:focus {
   background-color: #ff6a13;
   opacity: 85%;
   
+}
+
+/* retirando o icon nativo do tipo date usando IA */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
 }
