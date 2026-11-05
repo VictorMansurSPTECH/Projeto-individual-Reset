@@ -183,7 +183,7 @@ body{
   );
   pointer-events: none;
 }
-/* PAGINA DE CADASTRO */
+/* PAGINA DE CADASTRO e Login*/
 .corpo_cadastro {
   display: flex;
   height: 120vh;
@@ -289,4 +289,16 @@ input:focus {
 input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
   -webkit-appearance: none;
+}
+
+
+/* Login */
+
+.img_login{
+  height: 300px;
+  width: 300px;
+  border-radius: 100%;
+  background-color: #d9d9d98a;
+  background-image: url(../assets/imgs/crash\ Login.jpeg);
+  background-size: cover;
 }
