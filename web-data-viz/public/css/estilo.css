@@ -124,9 +124,11 @@ body{
   display: flex;
   position: relative;
   justify-content: space-between;
+  left: -40px;
   padding-top: 30px;
-  width: 100%;
+  width: 90%;
   height: 100px;
+
 }
 
 .botoes_home {
@@ -136,12 +138,12 @@ body{
   color: #000000;
   text-decoration: none;
   background: #ff6a13;
-  opacity: 85%;
+  opacity: 100%;
   border: none;
   text-align: center;
   align-items: center;
   justify-content: center;
-  border-radius: 20px;
+  border-radius: 15px;
   border-bottom: 4.5px solid transparent;
   font-size: 24px;
   font-family: "Nunito Sans";
@@ -152,7 +154,7 @@ body{
 
 .botoes_home:hover {
   background-color: #ff6a13;
-  opacity: 100%;
+  opacity: 85%;
   color: #000000;
 }
 
