@@ -75,7 +75,9 @@ body{
   display: block;
   width: 105px;
   height: 100px;
-  background-color: #54d617;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   border-radius: 100%;
 }
 
@@ -83,6 +85,7 @@ body{
   width: 100%;
   height: 100%;
   border-radius: 80%;
+  object-fit: cover; /* Mantém a proporção original e evita distorção (Ajuda da Ia)*/
 }
 
 /* ==================== PAGINA HOME ==================== */
@@ -203,7 +206,7 @@ body{
   height: 700px;
   width: 800px;
   flex-direction: column;
-  background-color: #0e0e11e3;
+  background-color: #0e0e11dc;
   align-items: center;
   justify-content: center;
   justify-content: space-around;
@@ -235,7 +238,7 @@ input[type="date"] {
   width: 100%;
   height: 70px;
   padding: 0 16px;
-  background-color:  #ffffff; /* Ajuste conforme o tema do seu Figma */
+  background-color:  #ffffff; 
   border: 1px solid #333333;
   border-radius: 15px;
   border: none;
@@ -308,6 +311,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 /* ==================== CURIOSIDADES ==================== */
 .corpo_curosidades {
   display: flex;
+  justify-content: end;
   height: 120vh;
   width: 100%;
   background-size: cover;
@@ -318,22 +322,50 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .textos_atrativos{
   display: flex;
-  height: 80%;
+  height: 40%;
   width: 50%;
-  background-color: #54d617;
+  transform: translateY(120px); /* Desloca o bloco para baixo; ajuste feito por IA. */
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  justify-content: space-around;
+}
+.textos_atrativos p{
+  font-size: 22px;
+  font-family: "Poppins";
+  color: #ffffff;
+  text-align: justify;
 }
 .div_botoes_textos_atrativos {
   display: flex;
   position: relative;
-  justify-content: space-between;
-  left: -40px;
+  justify-content: right;
+  left: 350px;
   padding-top: 30px;
-  width: 100%;
+  width: 250px;
   height: 100px;
-  background-color: #ec0404;
+}
+.botoes_curiosidade {
+  display: flex;
+  height: 60px;
+  width: 300px;
+  color: #000000;
+  text-decoration: none;
+  background: #ff6a13;
+  opacity: 100%;
+  border: none;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  font-size: 24px;
+  font-family: "Nunito Sans";
+  cursor: pointer;
+  padding-bottom: 4px;
+  transition: border-color 0.2s ease;
+}
 
+.botoes_curiosidade:hover {
+  background-color: #ff6a13;
+  opacity: 85%;
+  color: #000000;
 }
