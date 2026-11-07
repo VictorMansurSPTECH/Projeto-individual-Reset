@@ -328,6 +328,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding: 20px;
+  border-radius: 20px;
 }
 .textos_atrativos p{
   font-size: 22px;
