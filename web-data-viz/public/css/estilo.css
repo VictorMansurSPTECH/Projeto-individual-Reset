@@ -380,7 +380,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   align-items: center;
   flex-direction: column;
   /* padding: 50px; */
-  background-color: #0c0b0b;
+  background-color: #141414;
 }
 .corpo_descricao_fase{
   display: flex;
@@ -401,11 +401,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: #ffffff;
 }
 .div_imagem_fase{
-  width: 100%;
+  min-width: 20%;
   height: 900px;
   background-color: brown;
   border-radius: 10px;
-  background-image: url(../assets/imgs/imagem\ fundo\ wampa\ island.jpeg);
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -416,7 +415,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   justify-content: center;
   flex-direction: column;
   padding: 50px;
-  /* background-color: #df1010; */
 }
 .div_texto_fase{
   display: flex;
@@ -433,4 +431,65 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-family: "Nunito Sans" ;
   font-size: 22px;
   color: #ffff;
+}
+
+.cabecalho_curiosidade_interna h1{
+  position: relative;
+  font-family: "Nunito Sans" ;
+  right: 740px;
+  font-size: 22px;
+  color: #ffff;
+  margin-top: 50px;
+  margin-bottom: 100px;
+  align-items: center;
+}
+
+.fases_destaque{
+  display: flex;
+  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  height: 140vh;
+  width: 100%;
+  padding: 10px;
+}
+
+.card_fase{
+  display: flex;
+  justify-content: center;
+  align-items: left;
+  flex-direction: column;
+  height: 100%;
+  width: 49.5%;
+  border-radius: 45px;
+  padding: 10px;
+  background-color: #000000;
+}
+.card_fase h2{
+  margin-bottom: 15px;
+  font-size: 22px;
+  left: 500px;
+  font-family: "Nunito Sans";
+  color: #ffff;
+}
+
+.imagens_fases{
+  display: flex;
+  height: 50%;
+  width: 100%;
+  border-radius: 20px;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+}
+.descricao_fase{
+  display: flex;
+  height: auto;
+  width: 100%;
+  margin-top: 25px;
+  /* background-color: #3cff00; */
+  font-family: "Nunito Sans";
+  font-size: 18px;
+  color: #ffffff;
 }
