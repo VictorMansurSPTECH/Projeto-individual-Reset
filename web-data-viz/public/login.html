@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projeto Reset</title>
     <link rel="stylesheet" href="./css/estilo.css">
+    <script src="./js/sessao.js"></script>
 </head>
 <body>
     <header class="corpo_header">
@@ -45,7 +46,14 @@
             <img src="./assets/icon/cadeado.svg" class="svg_campos" draggable="false">
             <input type="password" placeholder="Digite sua senha" id="ipt_senha">
           </div>
-          <button class="botoes_cadastro_login">Login</button>
+          <button class="botoes_cadastro_login" onclick="entrar()">Login</button>
+          <div id="cardErro" style="display: none;">
+            <span id="mensagem_erro"></span>
+          </div>
+          
+          <div id="div_aguardar" style="display: none;">Carregando...</div>
+          <div id="div_erros_login" style="display: none;"></div>
+
         </div>
     </section>
 </body>
@@ -55,12 +63,15 @@
 
 
     function entrar() {
+        // MODIFICAR AQUI: estes nomes precisam apontar para os dois inputs acima.
         aguardar();
 
-        var emailVar = email_input.value;
-        var senhaVar = senha_input.value;
+        var emailVar = ipt_email.value;
+        var senhaVar = ipt_senha.value;
 
         if (emailVar == "" || senhaVar == "") {
+            // MODIFICAR AQUI: cardErro e mensagem_erro precisam existir no HTML,
+            // ou devem ser substituídos pelos IDs dos elementos de mensagem de erro.
             cardErro.style.display = "block"
             mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
             finalizarAguardar();
@@ -73,6 +84,7 @@
         console.log("FORM LOGIN: ", emailVar);
         console.log("FORM SENHA: ", senhaVar);
 
+        // MODIFICAR AQUI: confirme se esta é a rota correta da sua API.
         fetch("/usuarios/autenticar", {
             method: "POST",
             headers: {
@@ -96,7 +108,11 @@
                     sessionStorage.ID_USUARIO = json.id;
                     sessionStorage.AQUARIOS = JSON.stringify(json.aquarios)
 
+                    cardErro.style.display = "block"
+                    mensagem_erro.innerHTML = "Login realizado com sucesso! Redirecionando...";
+                    
                     setTimeout(function () {
+                        // MODIFICAR AQUI: altere o destino se o dashboard estiver em outra página.
                         window.location = "./dashboard/cards.html";
                     }, 1000); // apenas para exibir o loading
 

@@ -371,3 +371,66 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   opacity: 85%;
   color: #000000;
 }
+
+.cabecalho_curiosidade_interna{
+  display: flex;
+  height: auto;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* padding: 50px; */
+  background-color: #0c0b0b;
+}
+.corpo_descricao_fase{
+  display: flex;
+  height: 111vh;
+  width: 95%;
+  margin-top: 50px;
+  justify-content: center;
+  flex-direction: column;
+}
+.div_titulo{
+  display: flex;
+  height: 120px;
+  width: 100%;
+}
+.div_titulo h1{
+  font-family: "Nunito Sans";
+  font-size: 34px;
+  color: #ffffff;
+}
+.div_imagem_fase{
+  width: 100%;
+  height: 900px;
+  background-color: brown;
+  border-radius: 10px;
+  background-image: url(../assets/imgs/imagem\ fundo\ wampa\ island.jpeg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.texto_curiosidade_interna{
+  display: flex;
+  height: 110vh;
+  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+  padding: 50px;
+  /* background-color: #df1010; */
+}
+.div_texto_fase{
+  display: flex;
+  height: 320vh;
+  width: 100%;
+  background-color: #282828;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: justify;
+}
+
+.div_texto_fase p{
+  font-family: "Nunito Sans" ;
+  font-size: 20px;
+  color: #ffff;
+}
