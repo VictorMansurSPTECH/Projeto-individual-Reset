@@ -512,7 +512,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .card_bestiario {
   display: flex;
   flex-direction: column;
-  width: 450px; /* Largura controlada dos cards */
+  width: 600px; /* Largura controlada dos cards */
   background-color: #0b0b0e;
   border-radius: 25px;
   padding: 20px;
@@ -545,10 +545,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .conteudo_bestiario .sub_base {
+  align-self: flex-start;
   font-family: "Poppins", sans-serif;
   font-size: 16px;
-  color: #ff6a13;
+  color: #ffff;
   margin: 0;
+  padding-bottom: 8px; /* Espaço entre o texto e a linha */
+  border-bottom: 4px solid #ff6600;
 }
 
 .conteudo_bestiario p {
