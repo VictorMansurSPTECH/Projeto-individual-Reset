@@ -26,7 +26,7 @@
         </nav>
 
     </header>
-    <section class="corpo_cadastro" id="cadastro">
+    <folder class="corpo_cadastro" id="cadastro">
         <div class="sobreamento_lateral"> </div>
 
         <div class="campo_de_dados">
@@ -58,8 +58,11 @@
           </div>
 
           <button class="botoes_cadastro_login" onclick="cadastrar()">Cadastrar</button>
+
+          <div id="div_erro" class="loading-div"></div>
+
         </div>
-    </section>
+    </folder>
 </body>
 </html>
 
@@ -73,40 +76,42 @@
 
     //Recupere o valor da nova input pelo nome do id
     // Agora vá para o método fetch logo abaixo
-    var nomeVar = nome_input.value;
-    var emailVar = email_input.value;
-    var senhaVar = senha_input.value;
+    var nomeVar = ipt_nome.value;
+    var emailVar = ipt_email.value;
+    var senhaVar = ipt_senha.value;
     var idadeVar=ipt_data_nasc.value;
+    var ConfirmarSenhaVar= ipt_confimar_senha.value;
 
     // Verificando se há algum campo em branco
     if (
       nomeVar == "" ||
       emailVar == "" ||
       senhaVar == "" ||
-      idadeVar == ""
+      idadeVar == "" ||
+      ConfirmarSenhaVar == ""
     ) {
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
+      // cardErro.style.display = "block";
+      div_erro.innerHTML =
         "(Mensagem de erro para todos os campos em branco)";
 
-      finalizarAguardar();
+      // finalizarAguardar();
       return false;
     } else {
       setInterval(sumirMensagem, 5000);
     }
 
     // Verificando se já existe um email semelhante 
-    for (let i = 0; i < listaUsuarios.length; i++) {
-      if (emailVar != listaUsuarios[i]) {
-        listaUsuarios.push(emailVar)
-        console.log("Código de ativação válido.");
-        break;
-      } else {
-        cardErro.style.display = "block";
-        mensagem_erro.innerHTML = "(Mensagem de erro para código inválido)";
-        finalizarAguardar();
-      }
-    }
+    // for (let i = 0; i < listaUsuarios.length; i++) {
+    //   if (emailVar != listaUsuarios[i]) {
+    //     listaUsuarios.push(nomeVar)
+    //     console.log("Código de ativação válido.");
+    //     break;
+    //   } else {
+    //     cardErro.style.display = "block";
+    //     mensagem_erro.innerHTML = "(Mensagem de erro para código inválido)";
+    //     finalizarAguardar();
+    //   }
+    // }
 
     // Enviando o valor da nova input
     fetch("/usuarios/cadastrar", {
@@ -127,50 +132,33 @@
         console.log("resposta: ", resposta);
 
         if (resposta.ok) {
-          cardErro.style.display = "block";
+          // cardErro.style.display = "block";
 
-          mensagem_erro.innerHTML =
+          div_erro.innerHTML =
             "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
 
           setTimeout(() => {
             window.location = "login.html";
           }, "2000");
 
-          limparFormulario();
-          finalizarAguardar();
+          // limparFormulario();
+          // finalizarAguardar();
         } else {
           throw "Houve um erro ao tentar realizar o cadastro!";
         }
       })
       .catch(function (resposta) {
         console.log(`#ERRO: ${resposta}`);
-        finalizarAguardar();
+        // finalizarAguardar();
       });
 
     return false;
   }
 
-  // // Listando empresas cadastradas 
-  // function listar() {
-  //   fetch("/empresas/listar", {
-  //     method: "GET",
-  //   })
-  //     .then(function (resposta) {
-  //       resposta.json().then((empresas) => {
-  //         empresas.forEach((empresa) => {
-  //           listaEmpresasCadastradas.push(empresa);
+  // Listando empresas cadastradas 
 
-  //           console.log("listaEmpresasCadastradas")
-  //           console.log(listaEmpresasCadastradas[0].codigo_ativacao)
-  //         });
-  //       });
-  //     })
-  //     .catch(function (resposta) {
-  //       console.log(`#ERRO: ${resposta}`);
-  //     });
-  // }
 
   function sumirMensagem() {
-    cardErro.style.display = "none";
+    div_Erro.style.display = "none";
   }
 </script>

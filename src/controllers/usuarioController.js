@@ -11,6 +11,8 @@ function autenticar(req, res) {
     } else {
 
         usuarioModel.autenticar(email, senha)
+
+        // direcionando para o models 
             .then(
                 function (resultadoAutenticar) {
                     console.log(`\nResultados encontrados: ${resultadoAutenticar.length}`);
@@ -47,7 +49,9 @@ function cadastrar(req, res) {
     var nome = req.body.nomeServer;
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
-    var idade = req.body.idadeServer;
+    var idade = req.body.idadeServer; 
+
+    // dados do meu json do routers 
 
     if (nome == undefined) {
         res.status(400).send("Seu nome está undefined!");
