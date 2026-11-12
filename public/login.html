@@ -52,7 +52,7 @@
           </div>
           
           <div id="div_aguardar" style="display: none;">Carregando...</div>
-          <div id="div_erros_login" style="display: none;"></div>
+          <div id="div_erros" style="display: none;"></div>
 
         </div>
     </section>
@@ -71,13 +71,13 @@
         if (emailVar == "" || senhaVar == "") {
             // MODIFICAR AQUI: cardErro e mensagem_erro precisam existir no HTML,
             // ou devem ser substituídos pelos IDs dos elementos de mensagem de erro.
-            cardErro.style.display = "block"
-            mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
-            finalizarAguardar();
+            
+            div_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
+            // finalizarAguardar();
             return false;
         }
         else {
-            setInterval(sumirMensagem, 5000)
+            // setInterval(sumirMensagem, 5000)
         }
 
         console.log("FORM LOGIN: ", emailVar);

@@ -26,7 +26,7 @@
         </nav>
 
     </header>
-    <folder class="corpo_cadastro" id="cadastro">
+    <section class="corpo_cadastro" id="cadastro">
         <div class="sobreamento_lateral"> </div>
 
         <div class="campo_de_dados">
@@ -59,10 +59,10 @@
 
           <button class="botoes_cadastro_login" onclick="cadastrar()">Cadastrar</button>
 
-          <div id="div_erro" class="loading-div"></div>
+          <div id="div_erro" ></div>
 
         </div>
-    </folder>
+    </section>
 </body>
 </html>
 
@@ -97,7 +97,7 @@
       // finalizarAguardar();
       return false;
     } else {
-      setInterval(sumirMensagem, 5000);
+      // setInterval(sumirMensagem, 5000);
     }
 
     // Verificando se já existe um email semelhante 
@@ -125,7 +125,7 @@
         nomeServer: nomeVar,
         emailServer: emailVar,
         senhaServer: senhaVar,
-        idadeVar: idadeVar,
+        idadeServer: idadeVar,
       }),
     })
       .then(function (resposta) {
@@ -158,7 +158,7 @@
   // Listando empresas cadastradas 
 
 
-  function sumirMensagem() {
-    div_Erro.style.display = "none";
-  }
+  // function sumirMensagem() {
+  //   div_Erro.style.display = "none";
+  // }
 </script>
