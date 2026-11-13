@@ -70,14 +70,9 @@
 
   // Array para armazenar empresas cadastradas para validação de código de ativação 
 
-  let listaUsuarios = [
-    {
-      nome: "Admin",
-      email: "admin@example.com",
-      senha: "admin123"
-    }
 
-  ];
+
+
   function cadastrar() {
     let listaUsuarios = [];
     let caracteresEspeciais = /[!@#$%^&*(),.?":{}|<>]/;
@@ -85,63 +80,65 @@
     let caracteresLetras = /[a-zA-Z]/;
 
 
-    let nomeVar = document.getElementById("ipt_nome").value;
-    let emailVar = document.getElementById("ipt_email").value;
-    let senhaVar = document.getElementById("ipt_senha").value;
-    let idadeVar = document.getElementById("ipt_data_nasc").value;
-    let ConfirmarSenhaVar = document.getElementById("ipt_confimar_senha").value;
-
-
+    let nomeVar = document.getElementById("ipt_nome").value.trim();
+    let emailVar = document.getElementById("ipt_email").value.trim();
+    let senhaVar = document.getElementById("ipt_senha").value.trim();
+    let idadeVar = document.getElementById("ipt_data_nasc").value.trim();
+    let ConfirmarSenhaVar = document.getElementById("ipt_confimar_senha").value.trim();
+    
+    
     if (nomeVar == "" || emailVar == "" || senhaVar == "" || idadeVar == "" || ConfirmarSenhaVar == "") {
+      div_erro.style.color = "red";
+      div_erro.innerHTML = "Todos os campos devem ser preenchidos!<br>";
+      return false;
+    }
+    if (senhaVar.length < 8) {
         div_erro.style.color = "red";
-        div_erro.innerHTML = "Todos os campos devem ser preenchidos!";
+        div_erro.innerHTML += "A senha precisa ter pelo menos 8 caracteres.<br>";
+        return false;
+    }
+    
+    if (senhaVar !== ConfirmarSenhaVar) {
+        div_erro.style.color = "red";
+        div_erro.innerHTML += "As senhas não coincidem! <br>";
         return false;
     }
 
-
-    let emailExiste = false;
-    for (let i = 0; i < listaUsuarios.length; i++) {
-        if (listaUsuarios[i].email === emailVar) {
-            emailExiste = true;
-            break; // Encontrou, pode parar o loop
-        }
+    if(!caracteresEspeciais.test(senhaVar)){
+            div_erro.style.color = "red";
+            div_erro.innerHTML += "A senha deve conter pelo menos um caractere especial!<br>";
+            return false;
     }
-
+    if(!caracteresNumericos.test(senhaVar)){
+            div_erro.style.color = "red";
+            div_erro.innerHTML += "A senha deve conter pelo menos um número!<br>";
+            return false;
+    }
+    if(!caracteresLetras.test(senhaVar)){
+            div_erro.style.color = "red";
+            div_erro.innerHTML += "A senha deve conter pelo menos uma letra maiúscula ou minúscula!<br>";
+            return false;
+    }
     
 
-    if (emailExiste) {
+    if(idadeVar > "2026-01-01" || idadeVar < "1910-01-01") {
         div_erro.style.color = "red";
-        div_erro.innerHTML = "Este e-mail já está cadastrado!";
-        return false;
-    }
-    if(idadeVar > "2026-01-01" || idadeVar < "1900-01-01") {
-        div_erro.style.color = "red";
-        div_erro.innerHTML = "Data de nascimento inválida! Por favor, insira uma data entre 1900 e 2026.";
+        div_erro.innerHTML += "Data de nascimento inválida! Por favor, insira uma data entre 1910 e 2026.<br>";
         return false;
 
     }
 
     if (!emailVar.includes("@") || !emailVar.includes(".")) {
         div_erro.style.color = "red";
-        div_erro.innerHTML = "E-mail inválido! está faltando '@' ou '.'";
+        div_erro.innerHTML += "E-mail inválido! está faltando '@' ou '.'<br>";
         return false;
     }
     if(!emailVar.includes("gmail.com") && !emailVar.includes("hotmail.com") && !emailVar.includes("outlook.com")) {
-        div_erro.innerHTML += " Está faltando um domínio válido (gmail.com, hotmail.com, outlook.com).";
+        div_erro.innerHTML += " Está faltando um domínio válido (gmail.com, hotmail.com, outlook.com).<br>";
         return false;
       }
 
-    if (senhaVar !== ConfirmarSenhaVar) {
-        div_erro.style.color = "red";
-        div_erro.innerHTML = "As senhas não coincidem!";
-        return false;
-    }
 
-    if (senhaVar.length < 8) {
-        div_erro.style.color = "red";
-        div_erro.innerHTML = "A senha precisa ter pelo menos 8 caracteres.";
-        return false;
-    }
 
     // Se passou por todas as validações locais, adiciona o novo usuário temporariamente na lista
     listaUsuarios.push({
@@ -175,8 +172,8 @@
         if (resposta.ok) {
           // cardErro.style.display = "block";
 
-          div_erro.innerHTML =
-            "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
+          div_erro.style.color = "Green";
+          div_erro.innerHTML = "Cadastro realizado com sucesso! Redirecionando para tela de Login...<br>";
 
           setTimeout(() => {
             window.location = "login.html";
