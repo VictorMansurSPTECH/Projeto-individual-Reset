@@ -564,3 +564,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin: 0;
   word-break: break-word;
 }
+
+.botoes_para_proxima_curiosidade{
+  display: flex;
+  height: 10%;
+  width: 65%;
+  /* background-color: #ff6a13; */
+  justify-content: center;
+  justify-content: space-between;
+  }
