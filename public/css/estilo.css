@@ -415,6 +415,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   justify-content: center;
   flex-direction: column;
   padding: 50px;
+  text-align: justify;
 }
 .div_texto_fase{
   display: flex;
