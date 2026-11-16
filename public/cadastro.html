@@ -7,60 +7,44 @@
     <link rel="stylesheet" href="./css/estilo.css">
 </head>
 <body>
-    <header class="corpo_header">
-        <h1>
-            <div class="secao_img_logo">
-                <div class="logo">
-                    <img src="./assets/imgs/fase_lava_magmadon.jpeg" alt="logo">
-                </div>
-                Reset
-            </div>
-        </h1>
-        <nav class="navegacaoSite">
-            <a href="./index.html" class="botoes_header">Home</a>
-            <a href="#sobre-projeto" class="botoes_header">Sobre o Projeto</a>
 
-            <a href="./curiosidades.html" class="botoes_header">Curiosidades</a>
-            <a href="./login.html" class="botoes_header">Login</a>
-            <a href="./cadastro.html" class="botoes_header">Cadastro</a>
-        </nav>
-
-    </header>
     <section class="corpo_cadastro" id="cadastro">
         <div class="sobreamento_lateral"> </div>
 
         <div class="campo_de_dados">
+
           <h1>Faça seu cadastro</h1>
 
           <div class="campo_de_inputs">
             <img src="./assets/icon/nome.svg" class="svg_campos" draggable="false">
-            <input type="text" placeholder="Digite seu nome completo" id="ipt_nome">
+            <input type="text" placeholder="Digite seu nome completo" id="ipt_nome" oninput="validarNome()">
           </div>
+          <p class="p_validaçao" id="p_nome">Digite seu nome completo.</p>
 
           <div class="campo_de_inputs">
             <img src="./assets/icon/calendário.svg" class="svg_campos" draggable="false">
-            <input type="date" id="ipt_data_nasc">
+            <input type="date" id="ipt_data_nasc" min="1910-01-01" max="2026-12-31" onchange="validarData()">
           </div>
+          <p class="p_validaçao" id="p_data_nasc">Selecione sua data de nascimento(não pode ser inferior a 1910 e superior a 2026).</p>
 
           <div class="campo_de_inputs">
             <img src="./assets/icon/email.svg" class="svg_campos" draggable="false">
-            <input type="email" placeholder="Digite seu e-mail" id="ipt_email">
+            <input type="email" placeholder="Digite seu e-mail" id="ipt_email" oninput="validarEmail()">
           </div>
+          <p class="p_validaçao" id="p_email">Digite um e-mail válido com @ e domínio .</p>
 
           <div class="campo_de_inputs">
             <img src="./assets/icon/cadeado.svg" class="svg_campos" draggable="false">
-            <input type="password" placeholder="Digite sua senha" id="ipt_senha">
+            <input type="password" placeholder="Digite sua senha" id="ipt_senha" oninput="validarSenha()">
           </div>
-
+          <p class="p_validaçao" id="p_senha">A senha deve ter pelo menos 8 caracteres, incluindo letras, números e caracteres especiais.</p>
           <div class="campo_de_inputs">
             <img src="./assets/icon/cadeado.svg" class="svg_campos" draggable="false">
-            <input type="password" placeholder="Confirme sua senha" id="ipt_confimar_senha">
+            <input type="password" placeholder="Confirme sua senha" id="ipt_confimar_senha" oninput="validarConfirmarSenha()">
           </div>
-
-          <button class="botoes_cadastro_login" onclick="cadastrar()">Cadastrar</button>
-
-          <div id="div_erro" ></div>
-
+          <p class="p_validaçao" id="p_confimar_senha">As senhas não coincidem.</p>
+          <div id="div_erro" role="status" aria-live="polite"></div>
+          <button class="botoes_cadastro_login" type="button" onclick="cadastrar()">Cadastrar</button>
         </div>
     </section>
 </body>
@@ -68,76 +52,110 @@
 
 <script>
 
-  // Array para armazenar empresas cadastradas para validação de código de ativação 
+  function validarNome() {
+    let nome = ipt_nome.value;
 
+    if (nome.length >= 4 && nome.includes(" ")) {
+      p_nome.style.color = "green";
+      return true;
+    } else {
+      p_nome.style.color = "red";
+      return false;
+    }
+  }
 
+  function validarData() {
+    let data = ipt_data_nasc.value;
 
+    if (data != "" && data >= "1910-01-01" && data <= "2026-12-31") {
+      p_data_nasc.style.color = "green";
+      return true;
+    } else {
+      p_data_nasc.style.color = "red";
+      return false;
+    }
+  }
 
-  function cadastrar() {
-    let listaUsuarios = [];
+  function validarEmail() {
+    let email = ipt_email.value;
+
+    if (email.includes("@") && email.includes(".")
+      && (email.endsWith("@gmail.com") || email.endsWith("@hotmail.com") || email.endsWith("@outlook.com"))) {
+      p_email.style.color = "green";
+      return true;
+    } else {
+      p_email.style.color = "red";
+      return false;
+    }
+  }
+
+  function validarSenha() {
+    let senha = ipt_senha.value;
     let caracteresEspeciais = /[!@#$%^&*(),.?":{}|<>]/;
     let caracteresNumericos = /[0-9]/;
     let caracteresLetras = /[a-zA-Z]/;
+    let temCaractereEspecial = false;
+    let temNumero = false;
+    let temLetra = false;
 
+    for (let i = 0; i < senha.length; i++) {
+      if (caracteresEspeciais.test(senha[i])) {
+        temCaractereEspecial = true;
+      }
+      if (caracteresNumericos.test(senha[i])) {
+        temNumero = true;
+      }
+      if (caracteresLetras.test(senha[i])) {
+        temLetra = true;
+      }
+    }
 
-    let nomeVar = document.getElementById("ipt_nome").value.trim();
-    let emailVar = document.getElementById("ipt_email").value.trim();
-    let senhaVar = document.getElementById("ipt_senha").value.trim();
-    let idadeVar = document.getElementById("ipt_data_nasc").value.trim();
-    let ConfirmarSenhaVar = document.getElementById("ipt_confimar_senha").value.trim();
-    
-    
-    if (nomeVar == "" || emailVar == "" || senhaVar == "" || idadeVar == "" || ConfirmarSenhaVar == "") {
+    if (senha.length >= 8 && temCaractereEspecial && temNumero && temLetra) {
+      p_senha.style.color = "green";
+      if (ipt_confimar_senha.value != "") {
+        validarConfirmarSenha();
+      }
+      return true;
+    } else {
+      p_senha.style.color = "red";
+      if (ipt_confimar_senha.value != "") {
+        validarConfirmarSenha();
+      }
+      return false;
+    }
+  }
+
+  function validarConfirmarSenha() {
+    let senha = ipt_senha.value;
+    let confirmarSenha = ipt_confimar_senha.value;
+
+    if (confirmarSenha != "" && senha == confirmarSenha) {
+      p_confimar_senha.style.color = "green";
+      return true;
+    } else {
+      p_confimar_senha.style.color = "red";
+      return false;
+    }
+  }
+
+  function cadastrar() {
+    let listaUsuarios = [];
+    let nomeVar = ipt_nome.value;
+    let emailVar = ipt_email.value;
+    let senhaVar = ipt_senha.value;
+    let idadeVar = ipt_data_nasc.value;
+
+    let nomeValido = validarNome();
+    let dataValida = validarData();
+    let emailValido = validarEmail();
+    let senhaValida = validarSenha();
+    let confirmacaoValida = validarConfirmarSenha();
+
+    if (!nomeValido || !dataValida || !emailValido || !senhaValida || !confirmacaoValida) {
       div_erro.style.color = "red";
-      if (senhaVar.length < 8) {
-          div_erro.style.color = "red";
-          div_erro.innerHTML += "A senha precisa ter pelo menos 8 caracteres.<br>";
-          return false;
-      }
-        div_erro.innerHTML = "Todos os campos devem ser preenchidos!<br>";
-        return false;
-    }
-    if (senhaVar !== ConfirmarSenhaVar) {
-        div_erro.style.color = "red";
-        div_erro.innerHTML += "As senhas não coincidem! <br>";
-        return false;
-    }
-
-    if(!caracteresEspeciais.test(senhaVar)){
-            div_erro.style.color = "red";
-            div_erro.innerHTML += "A senha deve conter pelo menos um caractere especial!<br>";
-            return false;
-    }
-    if(!caracteresNumericos.test(senhaVar)){
-            div_erro.style.color = "red";
-            div_erro.innerHTML += "A senha deve conter pelo menos um número!<br>";
-            return false;
-    }
-    if(!caracteresLetras.test(senhaVar)){
-            div_erro.style.color = "red";
-            div_erro.innerHTML += "A senha deve conter pelo menos uma letra maiúscula ou minúscula!<br>";
-            return false;
-    }
-    
-
-    if(idadeVar > "2026-01-01" || idadeVar < "1910-01-01") {
-        div_erro.style.color = "red";
-        div_erro.innerHTML += "Data de nascimento inválida! Por favor, insira uma data entre 1910 e 2026.<br>";
-        return false;
-
-    }
-
-    if (!emailVar.includes("@") || !emailVar.includes(".")) {
-        div_erro.style.color = "red";
-        div_erro.innerHTML += "E-mail inválido! está faltando '@' ou '.'<br>";
-        return false;
-    }
-    if(!emailVar.includes("gmail.com") && !emailVar.includes("hotmail.com") && !emailVar.includes("outlook.com")) {
-        div_erro.innerHTML += " Está faltando um domínio válido (gmail.com, hotmail.com, outlook.com).<br>";
-        return false;
-      }
-
-
+      div_erro.innerHTML = "Verifique os campos destacados antes de continuar.";
+      return false;
+    }     
 
     // Se passou por todas as validações locais, adiciona o novo usuário temporariamente na lista
     listaUsuarios.push({
@@ -148,7 +166,6 @@
     });
 
     div_erro.innerHTML = "";
-
 
     // Enviando o valor da nova input
     fetch("/usuarios/cadastrar", {
