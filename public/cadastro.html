@@ -19,30 +19,30 @@
             <img src="./assets/icon/nome.svg" class="svg_campos" draggable="false">
             <input type="text" placeholder="Digite seu nome completo" id="ipt_nome" oninput="validarNome()">
           </div>
-          <p class="p_validaçao" id="p_nome">Digite seu nome completo.</p>
+          <p class="p_validaçao" id="p_nome"></p>
 
           <div class="campo_de_inputs">
             <img src="./assets/icon/calendário.svg" class="svg_campos" draggable="false">
             <input type="date" id="ipt_data_nasc" min="1910-01-01" max="2026-12-31" onchange="validarData()">
           </div>
-          <p class="p_validaçao" id="p_data_nasc">Selecione sua data de nascimento(não pode ser inferior a 1910 e superior a 2026).</p>
+          <p class="p_validaçao" id="p_data_nasc"></p>
 
           <div class="campo_de_inputs">
             <img src="./assets/icon/email.svg" class="svg_campos" draggable="false">
             <input type="email" placeholder="Digite seu e-mail" id="ipt_email" oninput="validarEmail()">
           </div>
-          <p class="p_validaçao" id="p_email">Digite um e-mail válido com @ e domínio .</p>
+          <p class="p_validaçao" id="p_email"></p>
 
           <div class="campo_de_inputs">
             <img src="./assets/icon/cadeado.svg" class="svg_campos" draggable="false">
             <input type="password" placeholder="Digite sua senha" id="ipt_senha" oninput="validarSenha()">
           </div>
-          <p class="p_validaçao" id="p_senha">A senha deve ter pelo menos 8 caracteres, incluindo letras, números e caracteres especiais.</p>
+          <p class="p_validaçao" id="p_senha"></p>
           <div class="campo_de_inputs">
             <img src="./assets/icon/cadeado.svg" class="svg_campos" draggable="false">
-            <input type="password" placeholder="Confirme sua senha" id="ipt_confimar_senha" oninput="validarConfirmarSenha()">
+            <input type="password" placeholder="Confirme sua senha" id="ipt_confirmar_senha" oninput="validarConfirmarSenha()">
           </div>
-          <p class="p_validaçao" id="p_confimar_senha">As senhas não coincidem.</p>
+          <p class="p_validaçao" id="p_confirmar_senha"></p>
           <div id="div_erro" role="status" aria-live="polite"></div>
           <button class="botoes_cadastro_login" type="button" onclick="cadastrar()">Cadastrar</button>
         </div>
@@ -55,11 +55,13 @@
   function validarNome() {
     let nome = ipt_nome.value;
 
-    if (nome.length >= 4 && nome.includes(" ")) {
+    if (nome.length >= 3 && nome.includes(" ")) {
       p_nome.style.color = "green";
+      p_nome.innerHTML = "";
       return true;
     } else {
       p_nome.style.color = "red";
+      p_nome.innerHTML = "Digite seu nome completo (mínimo de 3 caracteres).";
       return false;
     }
   }
@@ -69,9 +71,11 @@
 
     if (data != "" && data >= "1910-01-01" && data <= "2026-12-31") {
       p_data_nasc.style.color = "green";
+      p_data_nasc.innerHTML = "";
       return true;
     } else {
       p_data_nasc.style.color = "red";
+      p_data_nasc.innerHTML = "A data de nascimento não pode ser inferior a 1910 ou superior a 2026.";
       return false;
     }
   }
@@ -82,9 +86,11 @@
     if (email.includes("@") && email.includes(".")
       && (email.endsWith("@gmail.com") || email.endsWith("@hotmail.com") || email.endsWith("@outlook.com"))) {
       p_email.style.color = "green";
+      p_email.innerHTML = "";
       return true;
     } else {
       p_email.style.color = "red";
+      p_email.innerHTML = "O e-mail deve conter '@' e um domínio válido.";
       return false;
     }
   }
@@ -112,13 +118,15 @@
 
     if (senha.length >= 8 && temCaractereEspecial && temNumero && temLetra) {
       p_senha.style.color = "green";
-      if (ipt_confimar_senha.value != "") {
+      p_senha.innerHTML = "";
+      if (ipt_confirmar_senha.value != "") {
         validarConfirmarSenha();
       }
       return true;
     } else {
       p_senha.style.color = "red";
-      if (ipt_confimar_senha.value != "") {
+      p_senha.innerHTML = "A senha deve ter pelo menos 8 caracteres, incluindo letras maiusculas e minusculas, números e caracteres especiais.";
+      if (ipt_confirmar_senha.value != "") {
         validarConfirmarSenha();
       }
       return false;
@@ -127,13 +135,15 @@
 
   function validarConfirmarSenha() {
     let senha = ipt_senha.value;
-    let confirmarSenha = ipt_confimar_senha.value;
+    let confirmarSenha = ipt_confirmar_senha.value;
 
     if (confirmarSenha != "" && senha == confirmarSenha) {
-      p_confimar_senha.style.color = "green";
+      p_confirmar_senha.style.color = "green";
+      p_confirmar_senha.innerHTML = "";
       return true;
     } else {
-      p_confimar_senha.style.color = "red";
+      p_confirmar_senha.style.color = "red";
+      p_confirmar_senha.innerHTML = "As senhas não coincidem.";
       return false;
     }
   }
