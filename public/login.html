@@ -39,20 +39,18 @@
           <h1>Faça seu Login</h1>
           <div class="campo_de_inputs">
             <img src="./assets/icon/email.svg" class="svg_campos" draggable="false">
-            <input type="email" placeholder="Digite seu e-mail" id="ipt_email">
+            <input type="email" placeholder="Digite seu e-mail" id="ipt_email" oninput="validarEmail()">
           </div>
+          <p class="p_validaçao" id="p_email"></p>
 
           <div class="campo_de_inputs">
             <img src="./assets/icon/cadeado.svg" class="svg_campos" draggable="false">
-            <input type="password" placeholder="Digite sua senha" id="ipt_senha">
+            <input type="password" placeholder="Digite sua senha" id="ipt_senha" oninput="validarSenha()">
           </div>
+          <p class="p_validaçao" id="p_senha"></p>
           <button class="botoes_cadastro_login" onclick="entrar()">Login</button>
-          <div id="cardErro" style="display: none;">
-            <span id="mensagem_erro"></span>
-          </div>
-          
-          <div id="div_aguardar" style="display: none;">Carregando...</div>
-          <div id="div_erros" style="display: none;"></div>
+          <div id="div_erro" role="status" aria-live="polite"></div>
+          <div id="div_aguardar" style="display: none;">Validando...</div>
 
         </div>
     </section>
@@ -61,30 +59,56 @@
 
 <script>
 
+    function validarEmail() {
+        let email = ipt_email.value.trim();
+        let emailValido = email.includes("@")
+            && email.includes(".")
+            && (email.endsWith("@gmail.com")
+                || email.endsWith("@hotmail.com")
+                || email.endsWith("@outlook.com"));
 
-    function entrar() {
-        // MODIFICAR AQUI: estes nomes precisam apontar para os dois inputs acima.
-
-        var emailVar = ipt_email.value;
-        var senhaVar = ipt_senha.value;
-
-        if (emailVar == "" || senhaVar == "") {
-            // MODIFICAR AQUI: cardErro e mensagem_erro precisam existir no HTML,
-            // ou devem ser substituídos pelos IDs dos elementos de mensagem de erro.
-            
-            div_erro.innerHTML = " todos os campos em branco";
-            div_erro.style.color="red"
-            // finalizarAguardar();
+        if (emailValido) {
+            p_email.style.color = "green";
+            p_email.textContent = "";
+            return true;
+        } else {
+            p_email.style.color = "red";
+            p_email.textContent = email == ""
+                ? "Digite seu e-mail."
+                : "O e-mail deve conter '@' e um domínio válido.";
             return false;
         }
-        else {
+    }
 
+    function validarSenha() {
+        let senha = ipt_senha.value;
+
+        if (senha.trim() != "") {
+            p_senha.style.color = "green";
+            p_senha.textContent = "";
+            return true;
+        } else {
+            p_senha.style.color = "red";
+            p_senha.textContent = "Digite sua senha.";
+            return false;
+        }
+    }
+
+    function entrar() {
+        let emailValido = validarEmail();
+        let senhaValida = validarSenha();
+
+        if (!emailValido || !senhaValida) {
+            div_erro.style.color = "red";
+            div_erro.textContent = "Verifique os campos destacados antes de continuar.";
+            return false;
         }
 
-        console.log("FORM LOGIN: ", emailVar);
-        console.log("FORM SENHA: ", senhaVar);
+        let emailVar = ipt_email.value.trim();
+        let senhaVar = ipt_senha.value;
+        div_erro.textContent = "";
+        aguardar();
 
-        // MODIFICAR AQUI: confirme se esta é a rota correta da sua API.
         fetch("/usuarios/autenticar", {
             method: "POST",
             headers: {
@@ -95,47 +119,45 @@
                 senhaServer: senhaVar
             })
         }).then(function (resposta) {
-            console.log("ESTOU NO THEN DO entrar()!")
-
             if (resposta.ok) {
-                console.log(resposta);
-
-                resposta.json().then(json => {
-                    console.log(json);
-                    console.log(JSON.stringify(json));
+                return resposta.json().then(json => {
+                    finalizarAguardar();
                     sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.NOME_USUARIO = json.nome;
                     sessionStorage.ID_USUARIO = json.id;
 
-                    cardErro.style.display = "block"
-                    mensagem_erro.innerHTML = "Login realizado com sucesso! Redirecionando...";
-                    
+                    div_erro.style.color = "green";
+                    div_erro.textContent = "Login realizado com sucesso! Redirecionando...";
+
                     setTimeout(function () {
-                        // MODIFICAR AQUI: altere o destino se o dashboard estiver em outra página.
                         window.location = "./dashboard/cards.html";
-                    }, 1000); // apenas para exibir o loading
-
+                    }, 1000);
                 });
-
             } else {
+                return resposta.text().then(function (texto) {
+                    finalizarAguardar();
+                    div_erro.style.color = "red";
+                    let mensagem = "Não foi possível realizar o login. Tente novamente.";
 
-                console.log("Houve um erro ao tentar realizar o login!");
+                    if (resposta.status == 404) {
+                        mensagem = "Usuário não encontrado.";
+                    } else if (resposta.status == 400 || resposta.status == 403) {
+                        mensagem = texto || mensagem;
+                    } else {
+                        console.error("Erro retornado pelo servidor:", resposta.status, texto);
+                    }
 
-                resposta.text().then(texto => {
-                    console.error(texto);
-                    finalizarAguardar(texto);
+                    div_erro.textContent = mensagem;
                 });
             }
-
         }).catch(function (erro) {
-            console.log(erro);
-        })
+            finalizarAguardar();
+            div_erro.style.color = "red";
+            div_erro.textContent = "Não foi possível conectar ao servidor. Tente novamente.";
+            console.error("Erro ao tentar realizar o login:", erro);
+        });
 
         return false;
-    }
-
-    function sumirMensagem() {
-        cardErro.style.display = "none"
     }
 
 </script>

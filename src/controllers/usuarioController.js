@@ -16,24 +16,23 @@ function autenticar(req, res) {
             .then(
                 function (resultadoAutenticar) {
                     console.log(`\nResultados encontrados: ${resultadoAutenticar.length}`);
-                    console.log(`Resultados: ${JSON.stringify(resultadoAutenticar)}`);
 
-                    if (resultadoAutenticar.length == 1) {
-                        console.log(resultadoAutenticar);
-
-                        // Como não usamos aquários, retornamos os dados do usuário direto aqui
-                        res.json({
-                            id: resultadoAutenticar[0].id,
-                            email: resultadoAutenticar[0].email,
-                            nome: resultadoAutenticar[0].nome,
-                            senha: resultadoAutenticar[0].senha
-                        });
-
-                    } else if (resultadoAutenticar.length == 0) {
-                        res.status(403).send("Email e/ou senha inválido(s)");
-                    } else {
-                        res.status(403).send("Mais de um usuário com o mesmo login e senha!");
+                    if (resultadoAutenticar.length == 0) {
+                        res.status(404).send("Usuário não encontrado.");
+                        return;
                     }
+
+                    var usuario = resultadoAutenticar[0];
+                    if (Number(usuario.senha_valida) !== 1) {
+                        res.status(403).send("Senha incorreta.");
+                        return;
+                    }
+
+                    res.json({
+                        id: usuario.id,
+                        email: usuario.email,
+                        nome: usuario.nome
+                    });
                 }
             ).catch(
                 function (erro) {
