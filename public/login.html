@@ -69,11 +69,11 @@
 
         if (emailValido) {
             p_email.style.color = "green";
-            p_email.textContent = "";
+            p_email.innerHTML = "";
             return true;
         } else {
             p_email.style.color = "red";
-            p_email.textContent = email == ""
+            p_email.innerHTML = email == ""
                 ? "Digite seu e-mail."
                 : "O e-mail deve conter '@' e um domínio válido.";
             return false;
@@ -85,11 +85,11 @@
 
         if (senha.trim() != "") {
             p_senha.style.color = "green";
-            p_senha.textContent = "";
+            p_senha.innerHTML = "";
             return true;
         } else {
             p_senha.style.color = "red";
-            p_senha.textContent = "Digite sua senha.";
+            p_senha.innerHTML = "Digite sua senha.";
             return false;
         }
     }
@@ -100,13 +100,13 @@
 
         if (!emailValido || !senhaValida) {
             div_erro.style.color = "red";
-            div_erro.textContent = "Verifique os campos destacados antes de continuar.";
+            div_erro.innerHTML = "Verifique os campos destacados antes de continuar.";
             return false;
         }
 
         let emailVar = ipt_email.value.trim();
         let senhaVar = ipt_senha.value;
-        div_erro.textContent = "";
+        div_erro.innerHTML = "";
         aguardar();
 
         fetch("/usuarios/autenticar", {
@@ -127,7 +127,7 @@
                     sessionStorage.ID_USUARIO = json.id;
 
                     div_erro.style.color = "green";
-                    div_erro.textContent = "Login realizado com sucesso! Redirecionando...";
+                    div_erro.innerHTML = "Login realizado com sucesso! Redirecionando...";
 
                     setTimeout(function () {
                         window.location = "./dashboard/cards.html";
@@ -137,23 +137,15 @@
                 return resposta.text().then(function (texto) {
                     finalizarAguardar();
                     div_erro.style.color = "red";
-                    let mensagem = "Não foi possível realizar o login. Tente novamente.";
-
-                    if (resposta.status == 404) {
-                        mensagem = "Usuário não encontrado.";
-                    } else if (resposta.status == 400 || resposta.status == 403) {
-                        mensagem = texto || mensagem;
-                    } else {
-                        console.error("Erro retornado pelo servidor:", resposta.status, texto);
-                    }
-
-                    div_erro.textContent = mensagem;
+                    div_erro.innerHTML = resposta.status == 404
+                        ? "Usuário não encontrado."
+                        : texto || "Não foi possível realizar o login.";
                 });
             }
         }).catch(function (erro) {
             finalizarAguardar();
             div_erro.style.color = "red";
-            div_erro.textContent = "Não foi possível conectar ao servidor. Tente novamente.";
+            div_erro.innerHTML = "Não foi possível conectar ao servidor. Tente novamente.";
             console.error("Erro ao tentar realizar o login:", erro);
         });
 

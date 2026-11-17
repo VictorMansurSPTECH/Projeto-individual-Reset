@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Reset | Avaliação de Experiência</title>
+    <link rel="stylesheet" href="./css/estilo.css">
+    <link rel="icon" href="./assets/icon/favicon.ico">
+</head>
+<body>
+
+    <header class="corpo_header">
+        <h1>
+            <div class="secao_img_logo">
+                <div class="logo">
+                    <img src="./assets/imgs/fase_lava_magmadon.jpeg" alt="logo">
+                </div>
+                Reset
+            </div>
+        </h1>
+        <nav class="navegacaoSite">
+            <a href="#home" class="botoes_header">Home</a>
+            <a href="#sobre-projeto" class="botoes_header">Sobre o Projeto</a>
+            <a href="./curiosidades.html" class="botoes_header">Curiosidades</a>
+            <a href="./login.html" class="botoes_header">Login</a>
+            <a href="./cadastro.html" class="botoes_header">Cadastro</a>
+        </nav>
+    </header>
+
+    <!-- Conteúdo Principal / Formulário de Feedback Detalhado -->
+    <main class="container-principal">
+        <div class="card-formulario">
+            <h2>Avaliação de Experiência e Universo Reset</h2>
+            <p>Compartilhe conosco os detalhes da sua jornada por Crash of the Titans: sua experiência geral, os personagens, as fases e os titãs que mais marcaram você!</p>
+
+            <form id="formFeedback" onsubmit="enviarFeedback(event)">
+                
+                <!-- Avaliação de Experiência Geral -->
+                <div class="campo">
+                    <label for="experiencia">Como você avalia sua experiência geral com o projeto?</label>
+                    <select id="experiencia" required>
+                        <option value="" disabled selected>Selecione uma opção</option>
+                        <option value="Excelente">Excelente - Nostalgia pura!</option>
+                        <option value="Boa">Boa - Muito divertido e interativo</option>
+                        <option value="Regular">Regular - Pode melhorar</option>
+                        <option value="Ruim">Precisa de ajustes</option>
+                    </select>
+                </div>
+
+                <!-- Personagens com os quais se identificou -->
+                <div class="campo">
+                    <label>Com qual(is) personagem(ns) você mais se identificou?</label>
+                    <div class="opcoes-grid">
+                        <label><input type="checkbox" name="personagem" value="Crash Bandicoot"> Crash Bandicoot</label>
+                        <label><input type="checkbox" name="personagem" value="Coco Bandicoot"> Coco Bandicoot</label>
+                        <label><input type="checkbox" name="personagem" value="Crunch Bandicoot"> Crunch Bandicoot</label>
+                        <label><input type="checkbox" name="personagem" value="Neo Cortex"> Neo Cortex</label>
+                        <label><input type="checkbox" name="personagem" value="Nina Cortex"> Nina Cortex</label>
+                        <label><input type="checkbox" name="personagem" value="Aku Aku / Uka Uka"> Aku Aku / Uka Uka</label>
+                    </div>
+                </div>
+
+                <!-- Fase / Ambientação Favorita -->
+                <div class="campo">
+                    <label for="faseFavorita">Qual fase ou ambientação dos mundos você mais gostou?</label>
+                    <select id="faseFavorita" required>
+                        <option value="" disabled selected>Escolha um mundo/ambientação</option>
+                        <option value="Wumpa Island">Wumpa Island (Selva, Cavernas e Templo)</option>
+                        <option value="Lumber Yard">Lumber Yard (Serraria Industrial e Cânion)</option>
+                        <option value="N. Sanity Island">N. Sanity Island (Praia e Fábrica de Armas)</option>
+                        <option value="Uka Tree">Uka Tree (Interior da Árvore Gigante)</option>
+                        <option value="Cortex's Lair / Doominator">Cortex's Lair / Doominator (Fase Final)</option>
+                    </select>
+                </div>
+
+                <!-- O Porquê da Fase Favorita -->
+                <div class="campo">
+                    <label for="porQueFase">Por que você escolheu essa fase/ambientação?</label>
+                    <textarea id="porQueFase" rows="3" placeholder="Explique o que tornou essa ambientação especial (trilha, visual, desafios)..." required></textarea>
+                </div>
+
+                <!-- Titãs de cada fase e os comentários -->
+                <div class="campo">
+                    <label for="titasFavoritos">Quais titãs de cada fase você mais gostou e por quê?</label>
+                    <textarea id="titasFavoritos" rows="4" placeholder="Ex: Na Wumpa Island curti o Spike; no Lumber Yard amei o Magmadon e o Shellephant pela força..." required></textarea>
+                </div>
+
+                <!-- Comentários Adicionais -->
+                <div class="campo">
+                    <label for="comentario">Comentários ou sugestões adicionais sobre o projeto:</label>
+                    <textarea id="comentario" rows="3" placeholder="Deixe sua opinião geral ou sugestão de melhoria..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-enviar">Enviar Avaliação</button>
+            </form>
+
+            <div id="mensagemAlerta" class="alerta"></div>
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Proyecto Reset | Desenvolvido com foco em Crash of the Titans</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Interno -->
+    <script>
+        function enviarFeedback(event) {
+            event.preventDefault();
+
+            const experiencia = document.getElementById("experiencia").value;
+            const faseFavorita = document.getElementById("faseFavorita").value;
+            const porQueFase = document.getElementById("porQueFase").value;
+            const titasFavoritos = document.getElementById("titasFavoritos").value;
+            const comentario = document.getElementById("comentario").value;
+
+            // Coleta checkboxes de personagens marcados
+            const checkboxesPersonagens = document.querySelectorAll('input[name="personagem"]:checked');
+            const personagensSelecionados = Array.from(checkboxesPersonagens).map(cb => cb.value);
+
+            if (personagensSelecionados.length === 0) {
+                exibirAlerta("Por favor, selecione pelo menos um personagem com o qual se identificou.", "erro");
+                return;
+            }
+
+            // Objeto consolidado para envio posterior via API/Backend
+            const dadosQuestionario = {
+                experiencia:experiencia,
+                personagens: personagensSelecionados,
+                faseFavorita:faseFavorita,
+                porQuefase:porQueFase,
+                titansFavoritos:titasFavoritos,
+                comentario:comentario
+            };
+
+            console.log("Dados completos do questionário enviados:", dadosQuestionario);
+            exibirAlerta("Avaliação enviada com sucesso! Obrigado por detalhar sua experiência no Proyecto Reset.", "sucesso");
+            
+            document.getElementById("formFeedback").reset();
+        }
+
+        function exibirAlerta(mensagem, tipo) {
+            const alertaDiv = document.getElementById("mensagemAlerta");
+            alertaDiv.textContent = mensagem;
+            alertaDiv.className = `alerta ${tipo}`;
+            alertaDiv.style.display = "block";
+
+            setTimeout(() => {
+                alertaDiv.style.display = "none";
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
