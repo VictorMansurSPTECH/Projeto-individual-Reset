@@ -72,12 +72,13 @@
             // MODIFICAR AQUI: cardErro e mensagem_erro precisam existir no HTML,
             // ou devem ser substituídos pelos IDs dos elementos de mensagem de erro.
             
-            div_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
+            div_erro.innerHTML = " todos os campos em branco";
+            div_erro.style.color="red"
             // finalizarAguardar();
             return false;
         }
         else {
-            // setInterval(sumirMensagem, 5000)
+
         }
 
         console.log("FORM LOGIN: ", emailVar);
