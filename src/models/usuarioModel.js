@@ -2,7 +2,7 @@ var database = require("../database/config")
 
 function autenticar(email, senha) {
     var instrucaoSql = `
-        SELECT id, nome, email, (senha = ?) AS senha_valida
+        SELECT id_usuario, nome, email, (senha = ?) AS senha_valida
         FROM usuario WHERE email = ?;
     `;
     return database.executar(instrucaoSql, [senha, email]);
@@ -16,7 +16,7 @@ function cadastrar(nome, email, senha,idade) {
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
     var instrucaoSql = `
-        INSERT INTO usuario (nome, email, senha, idade) VALUES ('${nome}', '${email}', '${senha}', '${idade}');
+        INSERT INTO usuario (nome, email, senha, data_nascimento) VALUES ('${nome}', '${email}', '${senha}', '${idade}');
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);

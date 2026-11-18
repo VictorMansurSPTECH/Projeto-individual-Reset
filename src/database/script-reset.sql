@@ -1,16 +1,12 @@
-create database teste_01;
-use teste_01;
-
-
-CREATE DATABASE proyecto_reset;
-USE proyecto_reset;
+CREATE DATABASE Projeto_reset;
+USE Projeto_reset;
 
 CREATE TABLE usuario (
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL,
-    idade INT NOT NULL CHECK (idade > 0),
+    data_nascimento DATE NOT NULL,
     data_cadastro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -45,9 +41,9 @@ CREATE TABLE avaliacao_personagem (
     CONSTRAINT ch_fk_personagem FOREIGN KEY (fk_personagem) REFERENCES personagem(id_personagem)
 );
 
-INSERT INTO usuario (nome, email, senha, idade) VALUES
-    ('Victor Mansur', 'victor@email.com', 'senha_de_teste', 19),
-    ('Ana Souza', 'ana@email.com', 'senha_de_teste', 22);
+INSERT INTO usuario (nome, email, senha, data_nascimento) VALUES
+    ('Victor Mansur', 'victor@email.com', 'senha_de_teste', '2007-03-15'),
+    ('Ana Souza', 'ana@email.com', 'senha_de_teste', '2003-08-10');
 
 INSERT INTO fase (nome) VALUES
     ('Wumpa Island'),
@@ -77,7 +73,8 @@ INSERT INTO avaliacao_personagem (fk_avaliacao, fk_personagem) VALUES
 
 -- Consultas para o dashboard
 SELECT experiencia, COUNT(*) AS total
-FROM avaliacao GROUP BY experiencia
+FROM avaliacao
+GROUP BY experiencia
 ORDER BY total DESC;
 
 SELECT p.nome AS personagem, COUNT(*) AS total
@@ -91,7 +88,6 @@ FROM avaliacao a
 JOIN fase f ON a.fk_fase = f.id_fase
 GROUP BY f.nome
 ORDER BY total DESC;
-
 
 SELECT a.id_avaliacao, u.nome AS usuario, a.experiencia, f.nome AS fase, a.data_hora
 FROM avaliacao a
