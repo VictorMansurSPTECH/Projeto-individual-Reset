@@ -72,26 +72,28 @@ INSERT INTO avaliacao_personagem (fk_avaliacao, fk_personagem) VALUES
     (2, 4);
 
 -- Consultas para o dashboard
+-- KPI: Total de usuários cadastrados
+SELECT COUNT(*) AS total_usuarios
+FROM usuario;[cite: 14]
+
+-- KPI: Média de idade dos usuários
+SELECT ROUND(AVG(TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE())), 1) AS media_idade
+FROM usuario;[cite: 14]
+
+-- Gráfico: Idade dos usuários (quantidade por idade)
+SELECT TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) AS idade, COUNT(*) AS total
+FROM usuario
+GROUP BY idade
+ORDER BY idade ASC;[cite: 14]
+
+-- Gráfico: Quantidade de usuários cadastrados por data
+SELECT DATE_FORMAT(data_cadastro, '%d/%m/%Y') AS data_cadastro, COUNT(*) AS total
+FROM usuario
+GROUP BY DATE(data_cadastro), DATE_FORMAT(data_cadastro, '%d/%m/%Y')
+ORDER BY DATE(data_cadastro) ASC;[cite: 14]
+
+-- Avaliação da experiência no site (Excelente, Boa, Regular, Ruim)
 SELECT experiencia, COUNT(*) AS total
 FROM avaliacao
 GROUP BY experiencia
-ORDER BY total DESC;
-
-SELECT p.nome AS personagem, COUNT(*) AS total
-FROM avaliacao_personagem ap
-JOIN personagem p ON ap.fk_personagem = p.id_personagem
-GROUP BY p.nome
-ORDER BY total DESC;
-
-SELECT f.nome AS fase, COUNT(*) AS total
-FROM avaliacao a
-JOIN fase f ON a.fk_fase = f.id_fase
-GROUP BY f.nome
-ORDER BY total DESC;
-
-SELECT a.id_avaliacao, u.nome AS usuario, a.experiencia, f.nome AS fase, a.data_hora
-FROM avaliacao a
-JOIN usuario u ON a.fk_usuario = u.id_usuario
-JOIN fase f ON a.fk_fase = f.id_fase
-ORDER BY a.data_hora DESC
-LIMIT 20;
+ORDER BY total DESC;[cite: 14]
