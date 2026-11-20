@@ -264,3 +264,43 @@ body.body_dashboard {
 .area_grafico_ppt:hover {
     border-color: #ff6a13;
 }
+
+/* Estilos das barras criadas pelo JavaScript da dashboard. */
+.lista_grafico_dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+.linha_grafico_dashboard {
+    display: grid;
+    grid-template-columns: minmax(72px, 120px) 1fr auto;
+    align-items: center;
+    gap: 10px;
+}
+
+.rotulo_grafico_dashboard {
+    overflow: hidden;
+    color: #cccccc;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.barra_grafico_dashboard {
+    width: 100%;
+    height: 14px;
+    accent-color: #ff6a13;
+}
+
+.valor_grafico_dashboard {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.mensagem_dashboard {
+    margin: 0 0 16px;
+    color: #ff6a13;
+    font-weight: 700;
+}

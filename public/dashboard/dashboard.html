@@ -42,6 +42,8 @@
         </aside>
 
         <main class="area_conteudo_dashboard">
+            <p id="mensagem_dashboard" class="mensagem_dashboard" role="alert" hidden></p>
+
             <!-- TELA 1: AVALIAÇÃO DO SITE -->
             <div class="secao_menu_dashboard ativo" id="secao_avaliacao_site">
                 <div class="cabecalho_secao_dashboard">
@@ -64,10 +66,6 @@
                     <div class="bloco_grafico_ppt">
                         <h2 class="titulo_bloco_ppt">Idade dos usuários</h2>
                         <div class="area_grafico_ppt" id="div_grafico_idade_usuarios">
-                            <!-- Container reservado para o gráfico de idade dos usuários -->
-                             <canvas>
-                                
-                             </canvas>
                         </div>
                     </div>
 
@@ -88,8 +86,8 @@
 
                 <div class="grade_kpis_dashboard">
                     <div class="card_kpi_dashboard">
-                        <span class="rotulo_kpi_dashboard">Titan mais escolhido:</span>
-                        <span class="valor_kpi_dashboard" id="span_titan_mais_escolhido">-</span>
+                        <span class="rotulo_kpi_dashboard">Personagem mais escolhido:</span>
+                        <span class="valor_kpi_dashboard" id="span_personagem_mais_escolhido">-</span>
                     </div>
 
                     <div class="card_kpi_dashboard">
@@ -100,9 +98,8 @@
 
                 <div class="grade_graficos_dashboard">
                     <div class="bloco_grafico_ppt">
-                        <h2 class="titulo_bloco_ppt">escolha dos titans</h2>
-                        <div class="area_grafico_ppt" id="div_grafico_escolha_titans">
-                            <!-- Container reservado para o gráfico de escolha dos titans -->
+                        <h2 class="titulo_bloco_ppt">Escolha dos personagens</h2>
+                        <div class="area_grafico_ppt" id="div_grafico_personagens">
                         </div>
                     </div>
 
@@ -112,16 +109,24 @@
                             <!-- Container reservado para o gráfico de escolha dos mapas -->
                         </div>
                     </div>
+
+                    <div class="bloco_grafico_ppt">
+                        <h2 class="titulo_bloco_ppt">Avaliações por experiência</h2>
+                        <div class="area_grafico_ppt" id="div_grafico_experiencia">
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
     <script>
+        // Mostra o nome salvo na sessão, quando existe um usuário conectado.
         if (sessionStorage.NOME_USUARIO) {
-            span_nome_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+            document.getElementById("span_nome_usuario").textContent = sessionStorage.NOME_USUARIO;
         }
 
+        // Alterna entre as duas áreas da dashboard.
         function alternarMenuDashboard(menuSelecionado) {
             let secaoAvaliacao = document.getElementById("secao_avaliacao_site");
             let secaoFormularios = document.getElementById("secao_formularios");
@@ -147,6 +152,92 @@
             sessionStorage.clear();
             window.location = "../login.html";
         }
+
+        // Mostra cada resultado como uma barra, comparada com o maior valor.
+        function renderizarGrafico(elementoId, dados, campoRotulo) {
+            const container = document.getElementById(elementoId);
+            container.textContent = "";
+
+            if (dados.length === 0) {
+                container.textContent = "Sem dados para exibir.";
+                return;
+            }
+
+            const grafico = document.createElement("div");
+            grafico.className = "lista_grafico_dashboard";
+            var maiorValor = 0;
+            dados.forEach(function (item) {
+                if (Number(item.total) > maiorValor) {
+                    maiorValor = Number(item.total);
+                }
+            });
+
+            dados.forEach(function (item) {
+                const linha = document.createElement("div");
+                linha.className = "linha_grafico_dashboard";
+
+                const rotulo = document.createElement("span");
+                rotulo.className = "rotulo_grafico_dashboard";
+                rotulo.textContent = item[campoRotulo];
+
+                const barra = document.createElement("progress");
+                barra.className = "barra_grafico_dashboard";
+                barra.max = maiorValor;
+                barra.value = Number(item.total);
+                barra.setAttribute("aria-label", rotulo.textContent);
+
+                const valor = document.createElement("span");
+                valor.className = "valor_grafico_dashboard";
+                valor.textContent = item.total;
+
+                linha.appendChild(rotulo);
+                linha.appendChild(barra);
+                linha.appendChild(valor);
+                grafico.appendChild(linha);
+            });
+
+            container.appendChild(grafico);
+        }
+
+        // Pede os dados ao servidor e preenche os indicadores e gráficos.
+        function carregarDashboard() {
+            fetch("/dashboard/dados")
+                .then(function (resposta) {
+                    if (!resposta.ok) {
+                        throw new Error("Falha ao carregar os dados da dashboard.");
+                    }
+                    return resposta.json();
+                })
+                .then(function (dados) {
+                    // Preenche os indicadores que aparecem no topo da dashboard.
+                    document.getElementById("span_total_usuarios").textContent =
+                        dados.kpis.totalUsuarios;
+                    document.getElementById("span_media_idade").textContent =
+                        dados.kpis.mediaIdade === null
+                            ? "Sem dados"
+                            : dados.kpis.mediaIdade.toLocaleString("pt-BR") + " anos";
+                    document.getElementById("span_personagem_mais_escolhido").textContent =
+                        dados.kpis.personagemMaisEscolhido || "Sem dados";
+                    document.getElementById("span_mapa_mais_escolhido").textContent =
+                        dados.kpis.mapaMaisEscolhido || "Sem dados";
+
+                    // Cada chamada preenche um dos gráficos da página.
+                    renderizarGrafico("div_grafico_idade_usuarios", dados.graficos.usuariosPorIdade, "idade");
+                    renderizarGrafico("div_grafico_quantidade_usuarios", dados.graficos.usuariosPorData, "data_cadastro");
+                    renderizarGrafico("div_grafico_personagens", dados.graficos.personagensMaisEscolhidos, "nome");
+                    renderizarGrafico("div_grafico_escolha_mapas", dados.graficos.fasesMaisEscolhidas, "nome");
+                    renderizarGrafico("div_grafico_experiencia", dados.graficos.avaliacoesPorExperiencia, "experiencia");
+                })
+                .catch(function (erro) {
+                    console.error(erro);
+                    // Avisa o usuário quando a API ou o banco não estiver disponível.
+                    const mensagem = document.getElementById("mensagem_dashboard");
+                    mensagem.textContent = "Não foi possível carregar os dados. Tente novamente mais tarde.";
+                    mensagem.hidden = false;
+                });
+        }
+
+        carregarDashboard();
     </script>
 </body>
 </html>

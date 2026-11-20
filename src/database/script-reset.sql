@@ -74,26 +74,26 @@ INSERT INTO avaliacao_personagem (fk_avaliacao, fk_personagem) VALUES
 -- Consultas para o dashboard
 -- KPI: Total de usuários cadastrados
 SELECT COUNT(*) AS total_usuarios
-FROM usuario;[cite: 14]
+FROM usuario;
 
 -- KPI: Média de idade dos usuários
 SELECT ROUND(AVG(TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE())), 1) AS media_idade
-FROM usuario;[cite: 14]
+FROM usuario;
 
 -- Gráfico: Idade dos usuários (quantidade por idade)
 SELECT TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) AS idade, COUNT(*) AS total
 FROM usuario
 GROUP BY idade
-ORDER BY idade ASC;[cite: 14]
+ORDER BY idade ASC;
 
 -- Gráfico: Quantidade de usuários cadastrados por data
 SELECT DATE_FORMAT(data_cadastro, '%d/%m/%Y') AS data_cadastro, COUNT(*) AS total
 FROM usuario
 GROUP BY DATE(data_cadastro), DATE_FORMAT(data_cadastro, '%d/%m/%Y')
-ORDER BY DATE(data_cadastro) ASC;[cite: 14]
+ORDER BY DATE(data_cadastro) ASC;
 
 -- Avaliação da experiência no site (Excelente, Boa, Regular, Ruim)
 SELECT experiencia, COUNT(*) AS total
 FROM avaliacao
 GROUP BY experiencia
-ORDER BY total DESC;[cite: 14]
+ORDER BY total DESC;

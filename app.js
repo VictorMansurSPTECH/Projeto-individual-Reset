@@ -17,9 +17,7 @@ var app = express();
 
 var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
-var medidasRouter = require("./src/routes/medidas");
-
-
+var dashboardRouter = require("./src/routes/dashboard");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -27,11 +25,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(cors());
 
+// Registra as rotas da aplicação e da API da dashboard.
 app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
-
-// redirecionar medidas
-app.use("/medidas", medidasRouter);
+app.use("/dashboard", dashboardRouter);
 
 
 app.listen(PORTA_APP, function () {
