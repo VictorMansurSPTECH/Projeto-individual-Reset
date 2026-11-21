@@ -70,14 +70,16 @@
                     <div class="bloco_grafico_ppt">
                         <h2 class="titulo_bloco_ppt">Idade dos usuários</h2>
                         <div class="area_grafico_ppt" id="div_grafico_idade_usuarios">
-                            <canvas id="grafico_idade_usuarios" class="canvas_grafico_dashboard"></canvas>
+
+                            <canvas id="grafico_idade" class="canvas_grafico_dashboard"></canvas>
                         </div>
                     </div>
 
                     <div class="bloco_grafico_ppt">
-                        <h2 class="titulo_bloco_ppt">quantidade de usuários :</h2>
+                        <h2 class="titulo_bloco_ppt">Avaliação dos  usuários :</h2>
                         <div class="area_grafico_ppt" id="div_grafico_quantidade_usuarios">
-                            <canvas id="grafico_quantidade_usuarios" class="canvas_grafico_dashboard"></canvas>
+
+                            <canvas id="grafico_avaliacao" class="canvas_grafico_dashboard"></canvas>
                         </div>
                     </div>
                 </div>
@@ -103,16 +105,16 @@
 
                 <div class="grade_graficos_dashboard">
                     <div class="bloco_grafico_ppt">
-                        <h2 class="titulo_bloco_ppt">Escolha dos personagens</h2>
+                        <h2 class="titulo_bloco_ppt">Escolha dos titans</h2>
                         <div class="area_grafico_ppt" id="div_grafico_personagens">
-                            <canvas id="grafico_personagens" class="canvas_grafico_dashboard"></canvas>
+                            <canvas id="grafico_escolha_titans" class="canvas_grafico_dashboard"></canvas>
                         </div>
                     </div>
 
                     <div class="bloco_grafico_ppt">
                         <h2 class="titulo_bloco_ppt">escolha dos mapas</h2>
                         <div class="area_grafico_ppt" id="div_grafico_escolha_mapas">
-                            <canvas id="grafico_escolha_mapas" class="canvas_grafico_dashboard"></canvas>
+                            <canvas id="grafico_mapas_escolhidos" class="canvas_grafico_dashboard"></canvas>
                         </div>
                     </div>
 
@@ -121,7 +123,7 @@
             </div>
         </main>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
 
 
@@ -131,6 +133,202 @@
         }
 
         // Guarda os canvases e os dados para redesenhar os gráficos depois.
+// ------------------------ grafico avaliação do site
+        const grafico_avaliacao_site = document.getElementById('grafico_avaliacao');
+        const grafico_avaliacao_site_dados = {
+            labels: ['execelnte', 'Boa','regular','precisa de ajuste'],
+            datasets: [{
+                label: 'Quantidade de avaliações',
+                data: [1, 2,3,5],
+                backgroundColor: [
+                    '#4CAF50',
+                    '#2196F3',
+                    '#FFC107',
+                    '#F44336'
+                ],
+                borderColor: [
+                    '#388E3C',
+                    '#1976D2',
+                    '#FFA000',
+                    '#D32F2F'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+
+        const grafico_avaliacao = new Chart(grafico_avaliacao_site, {
+            type: 'bar',
+            data: grafico_avaliacao_site_dados,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+
+                }
+            },
+            plugins: []
+        });
+    // ------------------------------------
+    // ----------------------------------- grafico idade usuários
+        const grafico_idade = document.getElementById('grafico_idade');
+        const grafico_idade_dados ={
+
+            labels: ["de 0 até 10 anos","de 10 até 18 anos ", "de 18 até 25 anos de idade ",'de 25 até 35 anos de idade','de 35 ate 40 anos de idade','50 +'],
+            datasets: [{
+                label: "idade dos usuários",
+                data:[1,2,3,4,5,6],
+
+                backgroundColor:[
+                    'blue',
+                    'purple',
+                    'green',
+                    'yelow',
+                    'pink',
+                    'red'
+                ],
+                borderColor:[
+                    'blue',
+                    'purple',
+                    'green',
+                    'yelow',
+                    'pink',
+                    'red'
+                ],
+                borderWidth:2
+            }]
+        }
+        const grafico1 = new Chart(grafico_idade, {
+            type: 'bar',
+            data: grafico_idade_dados,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+
+                }
+            },
+            plugins: []
+        });
+
+        //------------------------------------ grafico escolha dos titans
+        const escolha_titans = document.getElementById("grafico_escolha_titans");
+
+        const grafico_titans_dados={
+                labels: ["Spike","Goar","Snipe","Yuktopus","Rhinoroller","Shellephant","Magmadon","Stench","Sludge","Scorporilla","Ratcicle","Battler","Ee-lectric","Uka Uka","Arachnina"],
+            datasets: [{
+                label: "Titans escolhidos",
+                data:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
+
+                backgroundColor: [
+                    'blue',
+                    'purple',
+                    'green',
+                    'yellow',
+                    'pink',
+                    'red',
+                    'orange',
+                    'cyan',
+                    'lime',
+                    'magenta',
+                    'teal',
+                    'brown',
+                    'gold',
+                    'indigo',
+                    'coral'
+               ]   ,
+                borderColor:[
+                    'blue',
+                    'purple',
+                    'green',
+                    'yellow',
+                    'pink',
+                    'red',
+                    'orange',
+                    'cyan',
+                    'lime',
+                    'magenta',
+                    'teal',
+                    'brown',
+                    'gold',
+                    'indigo',
+                    'coral'
+                ],
+                borderWidth:2
+            }]
+        }
+
+        const grafico2 = new Chart(escolha_titans , {
+            type: 'bar',
+            data: grafico_titans_dados,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+
+                }
+            },
+            plugins: []
+        });
+        // -----------------------------------------------
+        // grafico escolha dos mapas 
+
+
+
+
+        const mapas_escolhidos = document.getElementById("grafico_mapas_escolhidos");
+
+        const grafico_mapas_dados = {
+            labels: ["Wumpa Island", "Lumber Yard", "N. Sanity Island", "Uka Tree", "Doominator"],
+            datasets: [{
+                label: "Mapas escolhidos",
+                data: [1, 2, 3, 4, 5],
+                backgroundColor: [
+                    '#4CAF50',
+                    '#2196F3',
+                    '#FFC107',
+                    '#9C27B0',
+                    '#F44336'
+                ],
+                borderColor: [
+                    '#388E3C',
+                    '#1976D2',
+                    '#FFA000',
+                    '#7B1FA2',
+                    '#D32F2F'
+                ],
+                borderWidth: 2
+            }]
+        };
+
+        const grafico3 = new Chart(mapas_escolhidos, {
+            type: 'bar',
+            data: grafico_mapas_dados,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+
+                }
+            },
+            plugins: []
+        });
         var graficosDashboard = {};
 
         // Alterna entre as duas áreas da dashboard.
