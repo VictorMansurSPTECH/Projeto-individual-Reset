@@ -6,6 +6,7 @@
     <title>Projeto Reset | Dashboard</title>
     <link rel="stylesheet" href="../css/estilo.css">
     <link rel="stylesheet" href="../css/dashboards.css">
+    
 </head>
 <body class="body_dashboard">
     <div class="janela_dashboard">
@@ -19,8 +20,7 @@
                 </a>
 
                 <div class="saudacao_usuario_dashboard">
-                    <p>Olá,</p>
-                    <span id="span_nome_usuario">Usuário</span>
+                    <p>Olá, <span id="span_nome_usuario">Usuário</span> Bem-vindo de volta</p>
                 </div>
 
                 <nav class="navegacao_dashboard">
@@ -66,13 +66,19 @@
                     <div class="bloco_grafico_ppt">
                         <h2 class="titulo_bloco_ppt">Idade dos usuários</h2>
                         <div class="area_grafico_ppt" id="div_grafico_idade_usuarios">
+                            
+                                <canvas id="grafico"></canvas>
+                            
+                            <!-- O canvas do gráfico de idade aparece aqui; o JavaScript o cria automaticamente. -->
+                            
+                            </canvas>
                         </div>
                     </div>
 
                     <div class="bloco_grafico_ppt">
                         <h2 class="titulo_bloco_ppt">quantidade de usuários :</h2>
                         <div class="area_grafico_ppt" id="div_grafico_quantidade_usuarios">
-                            <!-- Container reservado para o gráfico de quantidade de usuários -->
+                            <!-- O canvas de quantidade de usuários aparece aqui; o JavaScript o cria automaticamente. -->
                         </div>
                     </div>
                 </div>
@@ -100,31 +106,71 @@
                     <div class="bloco_grafico_ppt">
                         <h2 class="titulo_bloco_ppt">Escolha dos personagens</h2>
                         <div class="area_grafico_ppt" id="div_grafico_personagens">
+                            <!-- O canvas de personagens aparece aqui; o JavaScript o cria automaticamente. -->
                         </div>
                     </div>
 
                     <div class="bloco_grafico_ppt">
                         <h2 class="titulo_bloco_ppt">escolha dos mapas</h2>
                         <div class="area_grafico_ppt" id="div_grafico_escolha_mapas">
-                            <!-- Container reservado para o gráfico de escolha dos mapas -->
+                            <!-- O canvas de mapas aparece aqui; o JavaScript o cria automaticamente. -->
                         </div>
                     </div>
 
-                    <div class="bloco_grafico_ppt">
-                        <h2 class="titulo_bloco_ppt">Avaliações por experiência</h2>
-                        <div class="area_grafico_ppt" id="div_grafico_experiencia">
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+
+
         // Mostra o nome salvo na sessão, quando existe um usuário conectado.
         if (sessionStorage.NOME_USUARIO) {
             document.getElementById("span_nome_usuario").textContent = sessionStorage.NOME_USUARIO;
         }
+
+        const ctx = document.getElementById('grafico');
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Amora', 'Banana', 'Morango', 'Uva', 'Laranja', 'Cereja'],
+                    datasets: [{
+                        label: '',
+                        data: [4, 9, 12, 11, 7, 2],
+                        backgroundColor: [
+                            '#6A1B9A', // Amora
+                            '#FBC02D', // Banana
+                            '#E53935', // Morango
+                            '#8E24AA', // Uva
+                            '#FB8C00', // Laranja
+                            '#C62828'  // Cereja
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        title:{
+                            display: true,
+                            text:"gráfico de idade média dos usuários "
+                        },
+                        labels:{
+                            display:false}
+                    }
+                },
+                plugins: []
+            });
+        // Guarda os canvases e os dados para redesenhar os gráficos depois.
+        var graficosDashboard = {};
 
         // Alterna entre as duas áreas da dashboard.
         function alternarMenuDashboard(menuSelecionado) {
@@ -146,6 +192,9 @@
                 menuFormularios.classList.add("ativo");
                 menuAvaliacao.classList.remove("ativo");
             }
+
+            // Redesenha os gráficos para ajustar o canvas ao tamanho da área visível.
+            redesenharGraficos();
         }
 
         function sairDashboard() {
@@ -153,51 +202,157 @@
             window.location = "../login.html";
         }
 
-        // Mostra cada resultado como uma barra, comparada com o maior valor.
-        function renderizarGrafico(elementoId, dados, campoRotulo) {
-            const container = document.getElementById(elementoId);
-            container.textContent = "";
+        // Desenha as barras e os textos de um gráfico dentro do canvas.
+        function desenharGrafico(canvas, dados, campoRotulo) {
+            // Lê a largura disponível para o canvas.
+            var largura = canvas.clientWidth;
 
-            if (dados.length === 0) {
-                container.textContent = "Sem dados para exibir.";
+            // Espera a área ficar visível antes de desenhar.
+            if (largura === 0) {
                 return;
             }
 
-            const grafico = document.createElement("div");
-            grafico.className = "lista_grafico_dashboard";
+            // Define a altura de cada linha do gráfico.
+            var alturaLinha = 40;
+            // Calcula uma altura que comporte todos os itens.
+            var altura = Math.max(230, dados.length * alturaLinha);
+
+            // Define o tamanho do canvas em pixels.
+            canvas.width = largura;
+            canvas.height = altura;
+            // Ajusta a altura visual do canvas.
+            canvas.style.height = altura + "px";
+
+            // Pega a ferramenta que desenha no canvas.
+            var contexto = canvas.getContext("2d");
+
+            // Informa um erro caso o navegador não consiga desenhar.
+            if (!contexto) {
+                throw new Error("Não foi possível desenhar o gráfico.");
+            }
+
+            // Define a fonte usada nos textos do gráfico.
+            contexto.font = "14px Arial";
+            // Alinha os textos pelo meio de cada linha.
+            contexto.textBaseline = "middle";
+
+            // Começa com zero para descobrir o maior valor.
             var maiorValor = 0;
-            dados.forEach(function (item) {
-                if (Number(item.total) > maiorValor) {
-                    maiorValor = Number(item.total);
+
+            // Percorre os dados para encontrar a barra mais longa.
+            for (var i = 0; i < dados.length; i++) {
+                // Converte o total para número e atualiza o maior valor.
+                if (Number(dados[i].total) > maiorValor) {
+                    maiorValor = Number(dados[i].total);
                 }
-            });
+            }
 
-            dados.forEach(function (item) {
-                const linha = document.createElement("div");
-                linha.className = "linha_grafico_dashboard";
+            // Reserva espaço à esquerda para rótulos e à direita para valores.
+            var inicioBarra = 110;
+            // Calcula o comprimento disponível para as barras.
+            var larguraBarra = Math.max(0, largura - inicioBarra - 50);
 
-                const rotulo = document.createElement("span");
-                rotulo.className = "rotulo_grafico_dashboard";
-                rotulo.textContent = item[campoRotulo];
+            // Percorre novamente os dados para desenhar cada linha.
+            for (var i = 0; i < dados.length; i++) {
+                // Guarda o item atual.
+                var item = dados[i];
+                // Calcula a posição vertical desta linha.
+                var y = i * alturaLinha + 20;
+                // Converte o total desta linha para número.
+                var valor = Number(item.total);
 
-                const barra = document.createElement("progress");
-                barra.className = "barra_grafico_dashboard";
-                barra.max = maiorValor;
-                barra.value = Number(item.total);
-                barra.setAttribute("aria-label", rotulo.textContent);
+                // Escolhe a cor cinza para o rótulo.
+                contexto.fillStyle = "#cccccc";
+                // Alinha o rótulo à esquerda.
+                contexto.textAlign = "left";
+                // Desenha o rótulo sem deixar que ultrapasse 100 pixels.
+                contexto.fillText(String(item[campoRotulo] || ""), 0, y, 100);
 
-                const valor = document.createElement("span");
-                valor.className = "valor_grafico_dashboard";
-                valor.textContent = item.total;
+                // Escolhe a cor escura para o fundo da barra.
+                contexto.fillStyle = "#282828";
+                // Desenha o fundo da barra.
+                contexto.fillRect(inicioBarra, y - 7, larguraBarra, 14);
 
-                linha.appendChild(rotulo);
-                linha.appendChild(barra);
-                linha.appendChild(valor);
-                grafico.appendChild(linha);
-            });
+                // Escolhe a cor laranja para a parte preenchida.
+                contexto.fillStyle = "#ff6a13";
+                // Desenha a barra proporcional ao total.
+                if (maiorValor > 0) {
+                    contexto.fillRect(
+                        inicioBarra,
+                        y - 7,
+                        larguraBarra * valor / maiorValor,
+                        14
+                    );
+                }
 
-            container.appendChild(grafico);
+                // Escolhe a cor branca para o total.
+                contexto.fillStyle = "#ffffff";
+                // Alinha o total à direita.
+                contexto.textAlign = "right";
+                // Escreve o total no fim da linha.
+                contexto.fillText(String(item.total), largura - 2, y);
+            }
         }
+
+        // Redesenha todos os gráficos guardados.
+        function redesenharGraficos() {
+            // Percorre os gráficos registrados pelo ID da área.
+            for (var id in graficosDashboard) {
+                // Guarda os dados do gráfico atual.
+                var grafico = graficosDashboard[id];
+                // Desenha novamente o canvas com os dados guardados.
+                desenharGrafico(grafico.canvas, grafico.dados, grafico.campoRotulo);
+            }
+        }
+
+        // Cria ou atualiza um gráfico dentro da área indicada.
+        function renderizarGrafico(elementoId, dados, campoRotulo) {
+            // Encontra a área HTML que vai receber o gráfico.
+            var container = document.getElementById(elementoId);
+
+            // Mostra um aviso quando a API não retorna itens.
+            if (dados.length === 0) {
+                // Remove o gráfico antigo da lista de gráficos ativos.
+                delete graficosDashboard[elementoId];
+                // Mostra a mensagem dentro da área do gráfico.
+                container.textContent = "Sem dados para exibir.";
+                // Para a função porque não há barras para desenhar.
+                return;
+            }
+
+            // Procura um canvas que já exista nessa área.
+            var canvas = container.querySelector("canvas");
+
+            // Cria o canvas somente quando ainda não existe.
+            if (!canvas) {
+                // Cria o elemento usado para desenhar.
+                canvas = document.createElement("canvas");
+                // Aplica a classe de estilo do canvas.
+                canvas.className = "canvas_grafico_dashboard";
+                // Informa leitores de tela que o canvas é uma imagem.
+                canvas.setAttribute("role", "img");
+                // Limpa textos antigos antes de colocar o novo canvas.
+                container.textContent = "";
+                // Coloca o canvas dentro da área do gráfico.
+                container.appendChild(canvas);
+            }
+
+            // Descreve o gráfico para leitores de tela.
+            canvas.setAttribute("aria-label", "Gráfico de barras com " + dados.length + " resultados.");
+
+            // Guarda o canvas e os dados para redesenhar quando necessário.
+            graficosDashboard[elementoId] = {
+                canvas: canvas,
+                dados: dados,
+                campoRotulo: campoRotulo
+            };
+
+            // Desenha o gráfico no canvas.
+            desenharGrafico(canvas, dados, campoRotulo);
+        }
+
+        // Redesenha os gráficos quando a janela muda de tamanho.
+        window.addEventListener("resize", redesenharGraficos);
 
         // Pede os dados ao servidor e preenche os indicadores e gráficos.
         function carregarDashboard() {
@@ -221,12 +376,14 @@
                     document.getElementById("span_mapa_mais_escolhido").textContent =
                         dados.kpis.mapaMaisEscolhido || "Sem dados";
 
-                    // Cada chamada preenche um dos gráficos da página.
+                    // Desenha o gráfico de idade dos usuários.
                     renderizarGrafico("div_grafico_idade_usuarios", dados.graficos.usuariosPorIdade, "idade");
+                    // Desenha o gráfico de novos usuários por data.
                     renderizarGrafico("div_grafico_quantidade_usuarios", dados.graficos.usuariosPorData, "data_cadastro");
+                    // Desenha o gráfico de personagens escolhidos.
                     renderizarGrafico("div_grafico_personagens", dados.graficos.personagensMaisEscolhidos, "nome");
+                    // Desenha o gráfico de mapas escolhidos.
                     renderizarGrafico("div_grafico_escolha_mapas", dados.graficos.fasesMaisEscolhidas, "nome");
-                    renderizarGrafico("div_grafico_experiencia", dados.graficos.avaliacoesPorExperiencia, "experiencia");
                 })
                 .catch(function (erro) {
                     console.error(erro);
