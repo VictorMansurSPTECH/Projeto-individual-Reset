@@ -15,8 +15,9 @@ CREATE TABLE fase (
     nome VARCHAR(60) NOT NULL UNIQUE
 );
 
-CREATE TABLE personagem (
-    id_personagem INT PRIMARY KEY AUTO_INCREMENT,
+-- Antes era "personagem". Agora a tabela guarda os titãs.
+CREATE TABLE titan (
+    id_titan INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(45) NOT NULL UNIQUE
 );
 
@@ -24,7 +25,6 @@ CREATE TABLE avaliacao (
     id_avaliacao INT PRIMARY KEY AUTO_INCREMENT,
     experiencia VARCHAR(10) NOT NULL CHECK (experiencia IN ('Excelente', 'Boa', 'Regular', 'Ruim')),
     por_que_fase VARCHAR(1000) NOT NULL,
-    titas_favoritos VARCHAR(1000) NOT NULL,
     comentario VARCHAR(1000),
     data_hora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     fk_usuario INT NOT NULL,
@@ -33,12 +33,13 @@ CREATE TABLE avaliacao (
     CONSTRAINT ch_fk_fase FOREIGN KEY (fk_fase) REFERENCES fase(id_fase)
 );
 
-CREATE TABLE avaliacao_personagem (
+-- Antes era "avaliacao_personagem". Liga cada avaliação aos titãs escolhidos.
+CREATE TABLE avaliacao_titan (
     fk_avaliacao INT NOT NULL,
-    fk_personagem INT NOT NULL,
-    PRIMARY KEY (fk_avaliacao, fk_personagem),
-    CONSTRAINT ch_fk_avaliacao FOREIGN KEY (fk_avaliacao) REFERENCES avaliacao(id_avaliacao),
-    CONSTRAINT ch_fk_personagem FOREIGN KEY (fk_personagem) REFERENCES personagem(id_personagem)
+    fk_titan INT NOT NULL,
+    PRIMARY KEY (fk_avaliacao, fk_titan),
+    CONSTRAINT ch_fk_avaliacao_titan FOREIGN KEY (fk_avaliacao) REFERENCES avaliacao(id_avaliacao),
+    CONSTRAINT ch_fk_titan FOREIGN KEY (fk_titan) REFERENCES titan(id_titan)
 );
 
 INSERT INTO usuario (nome, email, senha, data_nascimento) VALUES
@@ -52,20 +53,28 @@ INSERT INTO fase (nome) VALUES
     ('Uka Tree'),
     ('Cortex''s Lair / Doominator');
 
-INSERT INTO personagem (nome) VALUES
-    ('Crash Bandicoot'),
-    ('Coco Bandicoot'),
-    ('Crunch Bandicoot'),
-    ('Neo Cortex'),
-    ('Nina Cortex'),
-    ('Aku Aku / Uka Uka');
+INSERT INTO titan (nome) VALUES
+    ('Goar'),
+    ('Magmadon'),
+    ('Stench'),
+    ('Snipe'),
+    ('Spilo'),
+    ('Es-Electric'),
+    ('Shelophante'),
+    ('Scorporilla'),
+    ('Sludge'),
+    ('Rattler'),
+    ('Rhinoroller'),
+    ('Yukitopus'),
+    ('Uka Uka'),
+    ('Arachnina');
 
 -- Dados de teste
-INSERT INTO avaliacao (experiencia, por_que_fase, titas_favoritos, comentario, fk_usuario, fk_fase) VALUES
-    ('Excelente', 'A trilha e o visual da selva são muito marcantes.', 'Spike e Magmadon.', NULL, 1, 1),
-    ('Boa', 'Os desafios da serraria são divertidos.', 'RhinoRoller.', 'Ótimo projeto!', 2, 2);
+INSERT INTO avaliacao (experiencia, por_que_fase, comentario, fk_usuario, fk_fase) VALUES
+    ('Excelente', 'A trilha e o visual da selva são muito marcantes.', NULL, 1, 1),
+    ('Boa', 'Os desafios da serraria são divertidos.', 'Ótimo projeto!', 2, 2);
 
-INSERT INTO avaliacao_personagem (fk_avaliacao, fk_personagem) VALUES
+INSERT INTO avaliacao_titan (fk_avaliacao, fk_titan) VALUES
     (1, 1),
     (1, 2),
     (2, 1),
@@ -115,6 +124,14 @@ SELECT DATE_FORMAT(data_cadastro, '%d/%m/%Y') AS data_cadastro, COUNT(*) AS tota
 FROM usuario
 GROUP BY DATE(data_cadastro), DATE_FORMAT(data_cadastro, '%d/%m/%Y')
 ORDER BY DATE(data_cadastro) ASC;
+
+-- Gráfico: Titãs mais escolhidos
+SELECT titan.nome, COUNT(*) AS total
+FROM avaliacao_titan
+INNER JOIN titan
+    ON avaliacao_titan.fk_titan = titan.id_titan
+GROUP BY titan.id_titan, titan.nome
+ORDER BY total DESC, titan.nome ASC;
 
 -- Avaliação da experiência no site (Excelente, Boa, Regular, Ruim)
 SELECT experiencia, COUNT(*) AS total

@@ -71,16 +71,15 @@ function buscarUsuariosPorData() {
     return database.executar(instrucaoSql);
 }
 
-// Conta as escolhas de cada personagem registradas nas avaliações.
-function buscarPersonagensMaisEscolhidos() {
+// Conta as escolhas de cada titã registradas nas avaliações.
+function buscarTitansMaisEscolhidos() {
     var instrucaoSql = `
-        SELECT personagem.nome, COUNT(*) AS total
-        -- Relaciona cada escolha ao nome do personagem.
-        FROM avaliacao_personagem
-        INNER JOIN personagem
-            ON avaliacao_personagem.fk_personagem = personagem.id_personagem
-        GROUP BY personagem.id_personagem, personagem.nome
-        ORDER BY total DESC, personagem.nome ASC;
+        SELECT titan.nome, COUNT(*) AS total
+        FROM avaliacao_titan
+        INNER JOIN titan
+            ON avaliacao_titan.fk_titan = titan.id_titan
+        GROUP BY titan.id_titan, titan.nome
+        ORDER BY total DESC, titan.nome ASC;
     `;
     return database.executar(instrucaoSql);
 }
@@ -89,7 +88,6 @@ function buscarPersonagensMaisEscolhidos() {
 function buscarFasesMaisEscolhidas() {
     var instrucaoSql = `
         SELECT fase.nome, COUNT(*) AS total
-        -- Relaciona cada avaliação ao nome da fase.
         FROM avaliacao
         INNER JOIN fase
             ON avaliacao.fk_fase = fase.id_fase
@@ -105,6 +103,6 @@ module.exports = {
     buscarUsuariosPorIdade,
     buscarUsuariosPorFaixaIdade,
     buscarUsuariosPorData,
-    buscarPersonagensMaisEscolhidos,
+    buscarTitansMaisEscolhidos,
     buscarFasesMaisEscolhidas
 };

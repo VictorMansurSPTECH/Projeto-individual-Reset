@@ -24,11 +24,11 @@
         </nav>
     </header>
 
-    <!-- Conteúdo Principal / Formulário de Feedback Detalhado -->
+    <!-- Conteúdo Principal / Formulário de Feedback -->
     <main class="container-principal">
         <div class="card-formulario">
             <h2>Avaliação de Experiência e Universo Reset</h2>
-            <p>Compartilhe conosco os detalhes da sua jornada por Crash of the Titans: sua experiência geral, os personagens, as fases e os titãs que mais marcaram você!</p>
+            <p>Compartilhe conosco sua experiência geral, os titãs que você mais gostou e a fase que mais marcou você!</p>
 
             <form id="formFeedback" onsubmit="enviarFeedback(event)">
 
@@ -44,16 +44,24 @@
                     </select>
                 </div>
 
-                <!-- Personagens com os quais se identificou -->
+                <!-- Titãs que o usuário mais gostou -->
                 <div class="campo">
-                    <label>Com qual(is) personagem(ns) você mais se identificou?</label>
+                    <label>Quais titãs você mais gostou?</label>
                     <div class="opcoes-grid">
-                        <label><input type="checkbox" name="personagem" value="Crash Bandicoot"> Crash Bandicoot</label>
-                        <label><input type="checkbox" name="personagem" value="Coco Bandicoot"> Coco Bandicoot</label>
-                        <label><input type="checkbox" name="personagem" value="Crunch Bandicoot"> Crunch Bandicoot</label>
-                        <label><input type="checkbox" name="personagem" value="Neo Cortex"> Neo Cortex</label>
-                        <label><input type="checkbox" name="personagem" value="Nina Cortex"> Nina Cortex</label>
-                        <label><input type="checkbox" name="personagem" value="Aku Aku / Uka Uka"> Aku Aku / Uka Uka</label>
+                        <label><input type="checkbox" name="titan" value="Goar"> Goar</label>
+                        <label><input type="checkbox" name="titan" value="Magmadon"> Magmadon</label>
+                        <label><input type="checkbox" name="titan" value="Stench"> Stench</label>
+                        <label><input type="checkbox" name="titan" value="Snipe"> Snipe</label>
+                        <label><input type="checkbox" name="titan" value="Spilo"> Spilo</label>
+                        <label><input type="checkbox" name="titan" value="Es-Electric"> Es-Electric</label>
+                        <label><input type="checkbox" name="titan" value="Shelophante"> Shelophante</label>
+                        <label><input type="checkbox" name="titan" value="Scorporilla"> Scorporilla</label>
+                        <label><input type="checkbox" name="titan" value="Sludge"> Sludge</label>
+                        <label><input type="checkbox" name="titan" value="Rattler"> Rattler</label>
+                        <label><input type="checkbox" name="titan" value="Rhinoroller"> Rhinoroller</label>
+                        <label><input type="checkbox" name="titan" value="Yukitopus"> Yukitopus</label>
+                        <label><input type="checkbox" name="titan" value="Uka Uka"> Uka Uka</label>
+                        <label><input type="checkbox" name="titan" value="Arachnina"> Arachnina</label>
                     </div>
                 </div>
 
@@ -76,12 +84,6 @@
                     <textarea id="porQueFase" rows="3" placeholder="Explique o que tornou essa ambientação especial (trilha, visual, desafios)..." required></textarea>
                 </div>
 
-                <!-- Titãs de cada fase e os comentários -->
-                <div class="campo">
-                    <label for="titasFavoritos">Quais titãs de cada fase você mais gostou e por quê?</label>
-                    <textarea id="titasFavoritos" rows="4" placeholder="Ex: Na Wumpa Island curti o Spike; no Lumber Yard amei o Magmadon e o Shellephant pela força..." required></textarea>
-                </div>
-
                 <!-- Comentários Adicionais -->
                 <div class="campo">
                     <label for="comentario">Comentários ou sugestões adicionais sobre o projeto:</label>
@@ -95,10 +97,10 @@
         </div>
     </main>
 
-    
+    <!-- Rodapé -->
     <footer class="footer">
         <div class="container">
-            <p> 2026 Projeto Reset | Desenvolvido com foco em Crash of the Titans</p>
+            <p>&copy; 2026 Proyecto Reset | Desenvolvido com foco em Crash of the Titans</p>
         </div>
     </footer>
 
@@ -114,32 +116,30 @@
             var experiencia = document.getElementById("experiencia").value;
             var faseFavorita = document.getElementById("faseFavorita").value;
             var porQueFase = document.getElementById("porQueFase").value;
-            var titasFavoritos = document.getElementById("titasFavoritos").value;
             var comentario = document.getElementById("comentario").value;
 
-            // O id do usuário foi guardado no sessionStorage no login.
-            // Number() transforma o texto guardado em número.
+            // O id do usuário foi guardado no sessionStorage no login
             var idUsuario = Number(sessionStorage.ID_USUARIO);
 
-            // Pega todos os checkboxes de personagens que estão marcados
-            var checkboxes = document.querySelectorAll('input[name="personagem"]:checked');
+            // Pega todos os checkboxes de titãs que estão marcados
+            var checkboxes = document.querySelectorAll('input[name="titan"]:checked');
 
             // Cria uma lista com o valor de cada checkbox marcado
-            var personagensSelecionados = [];
+            var titansSelecionados = [];
             for (var i = 0; i < checkboxes.length; i++) {
-                personagensSelecionados.push(checkboxes[i].value);
+                titansSelecionados.push(checkboxes[i].value);
             }
 
             // Validação simples no navegador: o id precisa ser um número maior que zero.
-            // (O servidor valida tudo de novo, então isso é só para avisar mais rápido.)
+            // (O servidor valida tudo de novo.)
             if (isNaN(idUsuario) || idUsuario <= 0) {
                 exibirAlerta("Faça login novamente para enviar sua avaliação.", "erro");
-                return; // para a função aqui
+                return;
             }
 
-            // Pelo menos um personagem precisa estar marcado
-            if (personagensSelecionados.length === 0) {
-                exibirAlerta("Por favor, selecione pelo menos um personagem com o qual se identificou.", "erro");
+            // Pelo menos um titã precisa estar marcado
+            if (titansSelecionados.length === 0) {
+                exibirAlerta("Por favor, selecione pelo menos um titã que você mais gostou.", "erro");
                 return;
             }
 
@@ -147,10 +147,9 @@
             var dadosQuestionario = {
                 idUsuario: idUsuario,
                 experiencia: experiencia,
-                personagens: personagensSelecionados,
+                titans: titansSelecionados,
                 faseFavorita: faseFavorita,
                 porQueFase: porQueFase,
-                titasFavoritos: titasFavoritos,
                 comentario: comentario
             };
 
@@ -167,14 +166,12 @@
                 body: JSON.stringify(dadosQuestionario)
             })
             .then(function (resposta) {
-                // Primeiro passo: guarda se deu certo e lê o corpo da resposta
+                // Guarda se deu certo e lê o corpo da resposta
                 respostaOk = resposta.ok;
                 return resposta.json();
             })
             .then(function (resultado) {
-                // Segundo passo: resultado é o JSON que o servidor enviou
-
-                // Se o servidor respondeu com erro (400, 401 ou 500), mostra a mensagem dele
+                // Se o servidor respondeu com erro, mostra a mensagem dele
                 if (!respostaOk) {
                     exibirAlerta(resultado.erro || "Não foi possível enviar sua avaliação.", "erro");
                     return;
@@ -185,7 +182,7 @@
                 document.getElementById("formFeedback").reset();
             })
             .catch(function (erro) {
-                // Cai aqui se a internet falhar ou se a resposta não for um JSON válido
+                // Cai aqui se a internet falhar ou a resposta não for um JSON válido
                 console.error("Erro ao enviar questionário:", erro);
                 exibirAlerta("Não foi possível enviar sua avaliação. Tente novamente.", "erro");
             });
@@ -193,19 +190,11 @@
 
         // Mostra uma mensagem na tela e a esconde depois de 5 segundos
         function exibirAlerta(mensagem, tipo) {
-            // Pega a caixa de mensagem da página
             var alertaDiv = document.getElementById("mensagemAlerta");
-
-            // Coloca o texto dentro da caixa
             alertaDiv.textContent = mensagem;
-
-            // Define a classe: "alerta erro" ou "alerta sucesso" (o CSS pinta de cores diferentes)
             alertaDiv.className = "alerta " + tipo;
-
-            // Mostra a caixa
             alertaDiv.style.display = "block";
 
-            // Depois de 5000 milissegundos (5 segundos), esconde a caixa
             setTimeout(function () {
                 alertaDiv.style.display = "none";
             }, 5000);

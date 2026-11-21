@@ -6,10 +6,11 @@
     <title>Projeto Reset | Dashboard</title>
     <link rel="stylesheet" href="../css/estilo.css">
     <link rel="stylesheet" href="../css/dashboards.css">
-    
 </head>
 <body class="body_dashboard">
     <div class="janela_dashboard">
+
+        <!-- MENU LATERAL -->
         <aside class="menu_lateral_dashboard">
             <div class="topo_menu_dashboard">
                 <a href="./index.html" class="logo_menu_dashboard">
@@ -45,6 +46,7 @@
             </div>
         </aside>
 
+        <!-- ÁREA PRINCIPAL -->
         <main class="area_conteudo_dashboard">
             <p id="mensagem_dashboard" class="mensagem_dashboard" role="alert" hidden></p>
 
@@ -69,16 +71,14 @@
                 <div class="grade_graficos_dashboard">
                     <div class="bloco_grafico_ppt">
                         <h2 class="titulo_bloco_ppt">Idade dos usuários</h2>
-                        <div class="area_grafico_ppt" id="div_grafico_idade_usuarios">
-
+                        <div class="area_grafico_ppt">
                             <canvas id="grafico_idade" class="canvas_grafico_dashboard"></canvas>
                         </div>
                     </div>
 
                     <div class="bloco_grafico_ppt">
-                        <h2 class="titulo_bloco_ppt">Avaliação dos  usuários :</h2>
-                        <div class="area_grafico_ppt" id="div_grafico_quantidade_usuarios">
-
+                        <h2 class="titulo_bloco_ppt">Avaliação dos usuários</h2>
+                        <div class="area_grafico_ppt">
                             <canvas id="grafico_avaliacao" class="canvas_grafico_dashboard"></canvas>
                         </div>
                     </div>
@@ -93,8 +93,8 @@
 
                 <div class="grade_kpis_dashboard">
                     <div class="card_kpi_dashboard">
-                        <span class="rotulo_kpi_dashboard">Personagem mais escolhido:</span>
-                        <span class="valor_kpi_dashboard" id="span_personagem_mais_escolhido">-</span>
+                        <span class="rotulo_kpi_dashboard">Titã mais escolhido:</span>
+                        <span class="valor_kpi_dashboard" id="span_titan_mais_escolhido">-</span>
                     </div>
 
                     <div class="card_kpi_dashboard">
@@ -105,454 +105,175 @@
 
                 <div class="grade_graficos_dashboard">
                     <div class="bloco_grafico_ppt">
-                        <h2 class="titulo_bloco_ppt">Escolha dos titans</h2>
-                        <div class="area_grafico_ppt" id="div_grafico_personagens">
+                        <h2 class="titulo_bloco_ppt">Escolha dos titãs</h2>
+                        <div class="area_grafico_ppt">
                             <canvas id="grafico_escolha_titans" class="canvas_grafico_dashboard"></canvas>
                         </div>
                     </div>
 
                     <div class="bloco_grafico_ppt">
-                        <h2 class="titulo_bloco_ppt">escolha dos mapas</h2>
-                        <div class="area_grafico_ppt" id="div_grafico_escolha_mapas">
+                        <h2 class="titulo_bloco_ppt">Escolha dos mapas</h2>
+                        <div class="area_grafico_ppt">
                             <canvas id="grafico_mapas_escolhidos" class="canvas_grafico_dashboard"></canvas>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </main>
     </div>
+
+    <!-- Biblioteca que desenha os gráficos -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
+        // ===== CORES =====
+        // Lista de cores. Cada barra pega uma cor desta lista.
+        var CORES = [
+            "#ff6a13", "#4CAF50", "#2196F3", "#FFC107", "#9C27B0",
+            "#F44336", "#00BCD4", "#8BC34A", "#E91E63", "#795548"
+        ];
 
-
-        // Mostra o nome salvo na sessão, quando existe um usuário conectado.
-        if (sessionStorage.NOME_USUARIO) {
-            document.getElementById("span_nome_usuario").textContent = sessionStorage.NOME_USUARIO;
+        // Cria uma lista de cores com a quantidade pedida.
+        // Se faltar cor na lista CORES, ela recomeça do início.
+        function criarCores(quantidade) {
+            var cores = [];
+            for (var i = 0; i < quantidade; i++) {
+                cores.push(CORES[i % CORES.length]);
+            }
+            return cores;
         }
 
-        // Guarda os canvases e os dados para redesenhar os gráficos depois.
-// ------------------------ grafico avaliação do site
-        const grafico_avaliacao_site = document.getElementById('grafico_avaliacao');
-        const grafico_avaliacao_site_dados = {
-            labels: ['execelnte', 'Boa','regular','precisa de ajuste'],
-            datasets: [{
-                label: 'Quantidade de avaliações',
-                data: [1, 2,3,5],
-                backgroundColor: [
-                    '#4CAF50',
-                    '#2196F3',
-                    '#FFC107',
-                    '#F44336'
-                ],
-                borderColor: [
-                    '#388E3C',
-                    '#1976D2',
-                    '#FFA000',
-                    '#D32F2F'
-                ],
-                borderWidth: 1
-            }]
-        };
+        // ===== FUNÇÕES AUXILIARES =====
 
-
-        const grafico_avaliacao = new Chart(grafico_avaliacao_site, {
-            type: 'bar',
-            data: grafico_avaliacao_site_dados,
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                plugins: {
-
-                }
-            },
-            plugins: []
-        });
-    // ------------------------------------
-    // ----------------------------------- grafico idade usuários
-        const grafico_idade = document.getElementById('grafico_idade');
-        const grafico_idade_dados ={
-
-            labels: ["de 0 até 10 anos","de 10 até 18 anos ", "de 18 até 25 anos de idade ",'de 25 até 35 anos de idade','de 35 ate 40 anos de idade','50 +'],
-            datasets: [{
-                label: "idade dos usuários",
-                data:[1,2,3,4,5,6],
-
-                backgroundColor:[
-                    'blue',
-                    'purple',
-                    'green',
-                    'yelow',
-                    'pink',
-                    'red'
-                ],
-                borderColor:[
-                    'blue',
-                    'purple',
-                    'green',
-                    'yelow',
-                    'pink',
-                    'red'
-                ],
-                borderWidth:2
-            }]
-        }
-        const grafico1 = new Chart(grafico_idade, {
-            type: 'bar',
-            data: grafico_idade_dados,
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                plugins: {
-
-                }
-            },
-            plugins: []
-        });
-
-        //------------------------------------ grafico escolha dos titans
-        const escolha_titans = document.getElementById("grafico_escolha_titans");
-
-        const grafico_titans_dados={
-                labels: ["Spike","Goar","Snipe","Yuktopus","Rhinoroller","Shellephant","Magmadon","Stench","Sludge","Scorporilla","Ratcicle","Battler","Ee-lectric","Uka Uka","Arachnina"],
-            datasets: [{
-                label: "Titans escolhidos",
-                data:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
-
-                backgroundColor: [
-                    'blue',
-                    'purple',
-                    'green',
-                    'yellow',
-                    'pink',
-                    'red',
-                    'orange',
-                    'cyan',
-                    'lime',
-                    'magenta',
-                    'teal',
-                    'brown',
-                    'gold',
-                    'indigo',
-                    'coral'
-               ]   ,
-                borderColor:[
-                    'blue',
-                    'purple',
-                    'green',
-                    'yellow',
-                    'pink',
-                    'red',
-                    'orange',
-                    'cyan',
-                    'lime',
-                    'magenta',
-                    'teal',
-                    'brown',
-                    'gold',
-                    'indigo',
-                    'coral'
-                ],
-                borderWidth:2
-            }]
+        // Pega só um campo de cada item da lista.
+        // Exemplo: pegarCampo([{nome: "Goar", total: 3}], "nome") devolve ["Goar"]
+        function pegarCampo(lista, campo) {
+            var resultado = [];
+            for (var i = 0; i < lista.length; i++) {
+                resultado.push(lista[i][campo]);
+            }
+            return resultado;
         }
 
-        const grafico2 = new Chart(escolha_titans , {
-            type: 'bar',
-            data: grafico_titans_dados,
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+        // Cria um gráfico de barras vazio dentro do canvas indicado.
+        // Os dados chegam depois, pelo atualizarGrafico.
+        function criarGraficoVazio(idCanvas, nomeSerie) {
+            return new Chart(document.getElementById(idCanvas), {
+                type: "bar",
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: nomeSerie,
+                        data: [],
+                        backgroundColor: [],
+                        borderColor: [],
+                        borderWidth: 2
+                    }]
                 },
-                plugins: {
-
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true } }
                 }
-            },
-            plugins: []
-        });
-        // -----------------------------------------------
-        // grafico escolha dos mapas 
+            });
+        }
 
+        // Coloca os dados da lista do back-end dentro do gráfico e redesenha.
+        // lista: os itens que vieram do servidor
+        // campoRotulo: nome do campo que vira o texto embaixo de cada barra
+        // campoValor: nome do campo que vira a altura de cada barra
+        function atualizarGrafico(grafico, lista, campoRotulo, campoValor) {
+            grafico.data.labels = pegarCampo(lista, campoRotulo);
+            grafico.data.datasets[0].data = pegarCampo(lista, campoValor);
+            grafico.data.datasets[0].backgroundColor = criarCores(lista.length);
+            grafico.data.datasets[0].borderColor = criarCores(lista.length);
+            grafico.update();
+        }
 
+        // ===== CRIAÇÃO DOS GRÁFICOS (começam vazios) =====
+        var grafico_idade = criarGraficoVazio("grafico_idade", "Usuários");
+        var grafico_avaliacao = criarGraficoVazio("grafico_avaliacao", "Quantidade");
+        var grafico_escolha_titans = criarGraficoVazio("grafico_escolha_titans", "Titãs escolhidos");
+        var grafico_mapas_escolhidos = criarGraficoVazio("grafico_mapas_escolhidos", "Mapas escolhidos");
 
-
-        const mapas_escolhidos = document.getElementById("grafico_mapas_escolhidos");
-
-        const grafico_mapas_dados = {
-            labels: ["Wumpa Island", "Lumber Yard", "N. Sanity Island", "Uka Tree", "Doominator"],
-            datasets: [{
-                label: "Mapas escolhidos",
-                data: [1, 2, 3, 4, 5],
-                backgroundColor: [
-                    '#4CAF50',
-                    '#2196F3',
-                    '#FFC107',
-                    '#9C27B0',
-                    '#F44336'
-                ],
-                borderColor: [
-                    '#388E3C',
-                    '#1976D2',
-                    '#FFA000',
-                    '#7B1FA2',
-                    '#D32F2F'
-                ],
-                borderWidth: 2
-            }]
-        };
-
-        const grafico3 = new Chart(mapas_escolhidos, {
-            type: 'bar',
-            data: grafico_mapas_dados,
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                plugins: {
-
-                }
-            },
-            plugins: []
-        });
-        var graficosDashboard = {};
-
-        // Alterna entre as duas áreas da dashboard.
+        // ===== TROCA ENTRE AS DUAS TELAS =====
         function alternarMenuDashboard(menuSelecionado) {
-            let secaoAvaliacao = document.getElementById("secao_avaliacao_site");
-            let secaoFormularios = document.getElementById("secao_formularios");
-            let menuAvaliacao = document.getElementById("menu_avaliacao_site");
-            let menuFormularios = document.getElementById("menu_formularios");
+            var secaoAvaliacao = document.getElementById("secao_avaliacao_site");
+            var secaoFormularios = document.getElementById("secao_formularios");
+            var menuAvaliacao = document.getElementById("menu_avaliacao_site");
+            var menuFormularios = document.getElementById("menu_formularios");
 
             if (menuSelecionado === "avaliacao") {
                 secaoAvaliacao.classList.add("ativo");
                 secaoFormularios.classList.remove("ativo");
-
                 menuAvaliacao.classList.add("ativo");
                 menuFormularios.classList.remove("ativo");
-            } else if (menuSelecionado === "formularios") {
+            } else {
                 secaoFormularios.classList.add("ativo");
                 secaoAvaliacao.classList.remove("ativo");
-
                 menuFormularios.classList.add("ativo");
                 menuAvaliacao.classList.remove("ativo");
             }
-
-            // Redesenha os gráficos para ajustar o canvas ao tamanho da área visível.
-            redesenharGraficos();
         }
 
+        // ===== BOTÃO SAIR =====
         function sairDashboard() {
             sessionStorage.clear();
             window.location = "../login.html";
         }
 
-        // Desenha as barras e os textos de um gráfico dentro do canvas.
-        function desenharGrafico(canvas, dados, campoRotulo) {
-            // Lê a largura disponível para o canvas.
-            var largura = canvas.clientWidth;
-
-            // Espera a área ficar visível antes de desenhar.
-            if (largura === 0) {
-                return;
-            }
-
-            // Define a altura de cada linha do gráfico.
-            var alturaLinha = 40;
-            // Calcula uma altura que comporte todos os itens.
-            var altura = Math.max(230, dados.length * alturaLinha);
-
-            // Define o tamanho do canvas em pixels.
-            canvas.width = largura;
-            canvas.height = altura;
-            // Ajusta a altura visual do canvas.
-            canvas.style.height = altura + "px";
-
-            // Pega a ferramenta que desenha no canvas.
-            var contexto = canvas.getContext("2d");
-
-            // Informa um erro caso o navegador não consiga desenhar.
-            if (!contexto) {
-                throw new Error("Não foi possível desenhar o gráfico.");
-            }
-
-            // Define a fonte usada nos textos do gráfico.
-            contexto.font = "14px Arial";
-            // Alinha os textos pelo meio de cada linha.
-            contexto.textBaseline = "middle";
-
-            // Começa com zero para descobrir o maior valor.
-            var maiorValor = 0;
-
-            // Percorre os dados para encontrar a barra mais longa.
-            for (var i = 0; i < dados.length; i++) {
-                // Converte o total para número e atualiza o maior valor.
-                if (Number(dados[i].total) > maiorValor) {
-                    maiorValor = Number(dados[i].total);
-                }
-            }
-
-            // Reserva espaço à esquerda para rótulos e à direita para valores.
-            var inicioBarra = 110;
-            // Calcula o comprimento disponível para as barras.
-            var larguraBarra = Math.max(0, largura - inicioBarra - 50);
-
-            // Percorre novamente os dados para desenhar cada linha.
-            for (var i = 0; i < dados.length; i++) {
-                // Guarda o item atual.
-                var item = dados[i];
-                // Calcula a posição vertical desta linha.
-                var y = i * alturaLinha + 20;
-                // Converte o total desta linha para número.
-                var valor = Number(item.total);
-
-                // Escolhe a cor cinza para o rótulo.
-                contexto.fillStyle = "#cccccc";
-                // Alinha o rótulo à esquerda.
-                contexto.textAlign = "left";
-                // Desenha o rótulo sem deixar que ultrapasse 100 pixels.
-                contexto.fillText(String(item[campoRotulo] || ""), 0, y, 100);
-
-                // Escolhe a cor escura para o fundo da barra.
-                contexto.fillStyle = "#282828";
-                // Desenha o fundo da barra.
-                contexto.fillRect(inicioBarra, y - 7, larguraBarra, 14);
-
-                // Escolhe a cor laranja para a parte preenchida.
-                contexto.fillStyle = "#ff6a13";
-                // Desenha a barra proporcional ao total.
-                if (maiorValor > 0) {
-                    contexto.fillRect(
-                        inicioBarra,
-                        y - 7,
-                        larguraBarra * valor / maiorValor,
-                        14
-                    );
-                }
-
-                // Escolhe a cor branca para o total.
-                contexto.fillStyle = "#ffffff";
-                // Alinha o total à direita.
-                contexto.textAlign = "right";
-                // Escreve o total no fim da linha.
-                contexto.fillText(String(item.total), largura - 2, y);
-            }
+        // ===== NOME DO USUÁRIO =====
+        // Mostra o nome guardado na sessão, se existir
+        if (sessionStorage.NOME_USUARIO) {
+            document.getElementById("span_nome_usuario").textContent = sessionStorage.NOME_USUARIO;
         }
 
-        // Redesenha todos os gráficos guardados.
-        function redesenharGraficos() {
-            // Percorre os gráficos registrados pelo ID da área.
-            for (var id in graficosDashboard) {
-                // Guarda os dados do gráfico atual.
-                var grafico = graficosDashboard[id];
-                // Desenha novamente o canvas com os dados guardados.
-                desenharGrafico(grafico.canvas, grafico.dados, grafico.campoRotulo);
-            }
-        }
-
-        // Cria ou atualiza um gráfico dentro da área indicada.
-        function renderizarGrafico(elementoId, dados, campoRotulo) {
-            // Encontra a área HTML que vai receber o gráfico.
-            var container = document.getElementById(elementoId);
-
-            // Mostra um aviso quando a API não retorna itens.
-            if (dados.length === 0) {
-                // Remove o gráfico antigo da lista de gráficos ativos.
-                delete graficosDashboard[elementoId];
-                // Mostra a mensagem dentro da área do gráfico.
-                container.textContent = "Sem dados para exibir.";
-                // Para a função porque não há barras para desenhar.
-                return;
-            }
-
-            // Procura um canvas que já exista nessa área.
-            var canvas = container.querySelector("canvas");
-
-            // Cria o canvas somente quando ainda não existe.
-            if (!canvas) {
-                // Cria o elemento usado para desenhar.
-                canvas = document.createElement("canvas");
-                // Aplica a classe de estilo do canvas.
-                canvas.className = "canvas_grafico_dashboard";
-                // Informa leitores de tela que o canvas é uma imagem.
-                canvas.setAttribute("role", "img");
-                // Limpa textos antigos antes de colocar o novo canvas.
-                container.textContent = "";
-                // Coloca o canvas dentro da área do gráfico.
-                container.appendChild(canvas);
-            }
-
-            // Descreve o gráfico para leitores de tela.
-            canvas.setAttribute("aria-label", "Gráfico de barras com " + dados.length + " resultados.");
-
-            // Guarda o canvas e os dados para redesenhar quando necessário.
-            graficosDashboard[elementoId] = {
-                canvas: canvas,
-                dados: dados,
-                campoRotulo: campoRotulo
-            };
-
-            // Desenha o gráfico no canvas.
-            desenharGrafico(canvas, dados, campoRotulo);
-        }
-
-        // Redesenha os gráficos quando a janela muda de tamanho.
-        window.addEventListener("resize", redesenharGraficos);
-
-        // Pede os dados ao servidor e preenche os indicadores e gráficos.
+        // ===== BUSCA OS DADOS NO BACK-END E PREENCHE A TELA =====
         function carregarDashboard() {
             fetch("/dashboard/dados")
                 .then(function (resposta) {
-                    if (!resposta.ok) {
-                        throw new Error("Falha ao carregar os dados da dashboard.");
-                    }
+                    // Transforma a resposta em um objeto JavaScript
                     return resposta.json();
                 })
                 .then(function (dados) {
-                    // Preenche os indicadores que aparecem no topo da dashboard.
-                    document.getElementById("span_total_usuarios").textContent =
-                        dados.kpis.totalUsuarios;
-                    document.getElementById("span_media_idade").textContent =
-                        dados.kpis.mediaIdade === null
-                            ? "Sem dados"
-                            : dados.kpis.mediaIdade.toLocaleString("pt-BR") + " anos";
-                    document.getElementById("span_personagem_mais_escolhido").textContent =
-                        dados.kpis.personagemMaisEscolhido || "Sem dados";
+                    // Cards do topo da tela 1
+                    document.getElementById("span_total_usuarios").textContent = dados.kpis.totalUsuarios;
+
+                    if (dados.kpis.mediaIdade === null) {
+                        document.getElementById("span_media_idade").textContent = "Sem dados";
+                    } else {
+                        // toLocaleString troca o ponto por vírgula: 22.4 vira 22,4
+                        document.getElementById("span_media_idade").textContent =
+                            dados.kpis.mediaIdade.toLocaleString("pt-BR") + " anos";
+                    }
+
+                    // Cards do topo da tela 2
+                    document.getElementById("span_titan_mais_escolhido").textContent =
+                        dados.kpis.titanMaisEscolhido || "Sem dados";
                     document.getElementById("span_mapa_mais_escolhido").textContent =
                         dados.kpis.mapaMaisEscolhido || "Sem dados";
 
-                    // Desenha o gráfico de idade dos usuários.
-                    renderizarGrafico("div_grafico_idade_usuarios", dados.graficos.usuariosPorIdade, "idade");
-                    // Desenha o gráfico de novos usuários por data.
-                    renderizarGrafico("div_grafico_quantidade_usuarios", dados.graficos.usuariosPorData, "data_cadastro");
-                    // Desenha o gráfico de personagens escolhidos.
-                    renderizarGrafico("div_grafico_personagens", dados.graficos.personagensMaisEscolhidos, "nome");
-                    // Desenha o gráfico de mapas escolhidos.
-                    renderizarGrafico("div_grafico_escolha_mapas", dados.graficos.fasesMaisEscolhidas, "nome");
+                    // Gráfico de idade: faixas de idade
+                    atualizarGrafico(grafico_idade, dados.graficos.usuariosPorFaixaIdade, "faixa_idade", "total");
+
+                    // Gráfico de avaliações (temporário: cadastros por data até existir a consulta de experiências)
+                    atualizarGrafico(grafico_avaliacao, dados.graficos.usuariosPorData, "data_cadastro", "total");
+
+                    // Gráfico de titãs escolhidos (vem do banco)
+                    atualizarGrafico(grafico_escolha_titans, dados.graficos.titansMaisEscolhidos, "nome", "total");
+
+                    // Gráfico de mapas escolhidos
+                    atualizarGrafico(grafico_mapas_escolhidos, dados.graficos.fasesMaisEscolhidas, "nome", "total");
                 })
                 .catch(function (erro) {
+                    // Se der erro, mostra a mensagem na tela
                     console.error(erro);
-                    // Avisa o usuário quando a API ou o banco não estiver disponível.
-                    const mensagem = document.getElementById("mensagem_dashboard");
+                    var mensagem = document.getElementById("mensagem_dashboard");
                     mensagem.textContent = "Não foi possível carregar os dados. Tente novamente mais tarde.";
                     mensagem.hidden = false;
                 });
         }
 
+        // Começa o carregamento assim que a página abre
         carregarDashboard();
     </script>
 </body>
