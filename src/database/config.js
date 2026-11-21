@@ -17,7 +17,7 @@ function executar(instrucao, valores) {
     }
 
     return new Promise(function (resolve, reject) {
-        var conexao = mysql.createConnection(mySqlConfig);
+        var conexao = criarConexao();
         conexao.connect();
         conexao.query(instrucao, valores || [], function (erro, resultados) {
             conexao.end();
@@ -33,6 +33,11 @@ function executar(instrucao, valores) {
     });
 }
 
+function criarConexao() {
+    return mysql.createConnection(mySqlConfig);
+}
+
 module.exports = {
-    executar
+    executar,
+    criarConexao
 };

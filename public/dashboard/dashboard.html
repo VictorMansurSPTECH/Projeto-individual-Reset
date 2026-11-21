@@ -31,6 +31,10 @@
                     <div class="item_menu_dashboard" id="menu_formularios" onclick="alternarMenuDashboard('formularios')">
                         <span>Formulários</span>
                     </div>
+
+                    <a href="./questionário.html" class="item_menu_dashboard">
+                        <span>Questionário</span>
+                    </a>
                 </nav>
             </div>
 
@@ -66,19 +70,14 @@
                     <div class="bloco_grafico_ppt">
                         <h2 class="titulo_bloco_ppt">Idade dos usuários</h2>
                         <div class="area_grafico_ppt" id="div_grafico_idade_usuarios">
-                            
-                                <canvas id="grafico"></canvas>
-                            
-                            <!-- O canvas do gráfico de idade aparece aqui; o JavaScript o cria automaticamente. -->
-                            
-                            </canvas>
+                            <canvas id="grafico_idade_usuarios" class="canvas_grafico_dashboard"></canvas>
                         </div>
                     </div>
 
                     <div class="bloco_grafico_ppt">
                         <h2 class="titulo_bloco_ppt">quantidade de usuários :</h2>
                         <div class="area_grafico_ppt" id="div_grafico_quantidade_usuarios">
-                            <!-- O canvas de quantidade de usuários aparece aqui; o JavaScript o cria automaticamente. -->
+                            <canvas id="grafico_quantidade_usuarios" class="canvas_grafico_dashboard"></canvas>
                         </div>
                     </div>
                 </div>
@@ -106,14 +105,14 @@
                     <div class="bloco_grafico_ppt">
                         <h2 class="titulo_bloco_ppt">Escolha dos personagens</h2>
                         <div class="area_grafico_ppt" id="div_grafico_personagens">
-                            <!-- O canvas de personagens aparece aqui; o JavaScript o cria automaticamente. -->
+                            <canvas id="grafico_personagens" class="canvas_grafico_dashboard"></canvas>
                         </div>
                     </div>
 
                     <div class="bloco_grafico_ppt">
                         <h2 class="titulo_bloco_ppt">escolha dos mapas</h2>
                         <div class="area_grafico_ppt" id="div_grafico_escolha_mapas">
-                            <!-- O canvas de mapas aparece aqui; o JavaScript o cria automaticamente. -->
+                            <canvas id="grafico_escolha_mapas" class="canvas_grafico_dashboard"></canvas>
                         </div>
                     </div>
 
@@ -123,7 +122,6 @@
         </main>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
 
 
@@ -132,43 +130,6 @@
             document.getElementById("span_nome_usuario").textContent = sessionStorage.NOME_USUARIO;
         }
 
-        const ctx = document.getElementById('grafico');
-
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Amora', 'Banana', 'Morango', 'Uva', 'Laranja', 'Cereja'],
-                    datasets: [{
-                        label: '',
-                        data: [4, 9, 12, 11, 7, 2],
-                        backgroundColor: [
-                            '#6A1B9A', // Amora
-                            '#FBC02D', // Banana
-                            '#E53935', // Morango
-                            '#8E24AA', // Uva
-                            '#FB8C00', // Laranja
-                            '#C62828'  // Cereja
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    },
-                    plugins: {
-                        title:{
-                            display: true,
-                            text:"gráfico de idade média dos usuários "
-                        },
-                        labels:{
-                            display:false}
-                    }
-                },
-                plugins: []
-            });
         // Guarda os canvases e os dados para redesenhar os gráficos depois.
         var graficosDashboard = {};
 

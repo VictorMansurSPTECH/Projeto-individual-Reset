@@ -86,6 +86,30 @@ FROM usuario
 GROUP BY idade
 ORDER BY idade ASC;
 
+-- Gráfico: Usuários agrupados por faixa de idade
+SELECT faixas.faixa_idade, COUNT(usuario.id_usuario) AS total
+FROM (
+    SELECT 'Até 12 anos' AS faixa_idade, 1 AS ordem
+    UNION ALL SELECT '13 a 17 anos', 2
+    UNION ALL SELECT '18 a 24 anos', 3
+    UNION ALL SELECT '25 a 34 anos', 4
+    UNION ALL SELECT '35 a 44 anos', 5
+    UNION ALL SELECT '45 a 59 anos', 6
+    UNION ALL SELECT '60 anos ou mais', 7
+) AS faixas
+LEFT JOIN usuario
+    ON faixas.faixa_idade = CASE
+        WHEN TIMESTAMPDIFF(YEAR, usuario.data_nascimento, CURDATE()) <= 12 THEN 'Até 12 anos'
+        WHEN TIMESTAMPDIFF(YEAR, usuario.data_nascimento, CURDATE()) <= 17 THEN '13 a 17 anos'
+        WHEN TIMESTAMPDIFF(YEAR, usuario.data_nascimento, CURDATE()) <= 24 THEN '18 a 24 anos'
+        WHEN TIMESTAMPDIFF(YEAR, usuario.data_nascimento, CURDATE()) <= 34 THEN '25 a 34 anos'
+        WHEN TIMESTAMPDIFF(YEAR, usuario.data_nascimento, CURDATE()) <= 44 THEN '35 a 44 anos'
+        WHEN TIMESTAMPDIFF(YEAR, usuario.data_nascimento, CURDATE()) <= 59 THEN '45 a 59 anos'
+        ELSE '60 anos ou mais'
+    END
+GROUP BY faixas.faixa_idade, faixas.ordem
+ORDER BY faixas.ordem;
+
 -- Gráfico: Quantidade de usuários cadastrados por data
 SELECT DATE_FORMAT(data_cadastro, '%d/%m/%Y') AS data_cadastro, COUNT(*) AS total
 FROM usuario

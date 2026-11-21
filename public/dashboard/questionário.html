@@ -108,7 +108,7 @@
 
     <!-- JavaScript Interno -->
     <script>
-        function enviarFeedback(event) {
+        async function enviarFeedback(event) {
             event.preventDefault();
 
             const experiencia = document.getElementById("experiencia").value;
@@ -116,30 +116,52 @@
             const porQueFase = document.getElementById("porQueFase").value;
             const titasFavoritos = document.getElementById("titasFavoritos").value;
             const comentario = document.getElementById("comentario").value;
+            const idUsuario = Number(sessionStorage.ID_USUARIO);
 
             // Coleta checkboxes de personagens marcados
             const checkboxesPersonagens = document.querySelectorAll('input[name="personagem"]:checked');
             const personagensSelecionados = Array.from(checkboxesPersonagens).map(cb => cb.value);
+
+            if (!Number.isSafeInteger(idUsuario) || idUsuario <= 0) {
+                exibirAlerta("Faça login novamente para enviar sua avaliação.", "erro");
+                return;
+            }
 
             if (personagensSelecionados.length === 0) {
                 exibirAlerta("Por favor, selecione pelo menos um personagem com o qual se identificou.", "erro");
                 return;
             }
 
-            // Objeto consolidado para envio posterior via API/Backend
             const dadosQuestionario = {
-                experiencia:experiencia,
+                idUsuario: idUsuario,
+                experiencia: experiencia,
                 personagens: personagensSelecionados,
-                faseFavorita:faseFavorita,
-                porQuefase:porQueFase,
-                titansFavoritos:titasFavoritos,
-                comentario:comentario
+                faseFavorita: faseFavorita,
+                porQueFase: porQueFase,
+                titasFavoritos: titasFavoritos,
+                comentario: comentario
             };
 
-            console.log("Dados completos do questionário enviados:", dadosQuestionario);
-            exibirAlerta("Avaliação enviada com sucesso! Obrigado por detalhar sua experiência no Proyecto Reset.", "sucesso");
-            
-            document.getElementById("formFeedback").reset();
+            try {
+                const resposta = await fetch("/questionario", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(dadosQuestionario)
+                });
+                const resultado = await resposta.json();
+
+                if (!resposta.ok) {
+                    throw new Error(resultado.erro || "Não foi possível enviar sua avaliação.");
+                }
+
+                exibirAlerta("Avaliação enviada com sucesso! Obrigado por detalhar sua experiência no Proyecto Reset.", "sucesso");
+                document.getElementById("formFeedback").reset();
+            } catch (erro) {
+                console.error("Erro ao enviar questionário:", erro);
+                exibirAlerta(erro.message || "Não foi possível enviar sua avaliação. Tente novamente.", "erro");
+            }
         }
 
         function exibirAlerta(mensagem, tipo) {

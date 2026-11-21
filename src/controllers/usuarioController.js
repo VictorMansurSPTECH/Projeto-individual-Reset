@@ -29,7 +29,7 @@ function autenticar(req, res) {
                     }
 
                     res.json({
-                        id: usuario.id,
+                        id: usuario.id_usuario,
                         email: usuario.email,
                         nome: usuario.nome
                     });

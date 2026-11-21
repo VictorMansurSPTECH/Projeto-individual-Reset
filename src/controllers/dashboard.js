@@ -6,8 +6,8 @@ async function buscarDados(req, res) {
         var resultadoTotal = await dashboardModel.buscarTotalUsuarios();
         var resultadoMedia = await dashboardModel.buscarMediaIdadeUsuarios();
         var usuariosPorIdade = await dashboardModel.buscarUsuariosPorIdade();
+        var usuariosPorFaixaIdade = await dashboardModel.buscarUsuariosPorFaixaIdade();
         var usuariosPorData = await dashboardModel.buscarUsuariosPorData();
-        var avaliacoesPorExperiencia = await dashboardModel.buscarAvaliacoesPorExperiencia();
         var personagens = await dashboardModel.buscarPersonagensMaisEscolhidos();
         var fases = await dashboardModel.buscarFasesMaisEscolhidas();
 
@@ -29,8 +29,8 @@ async function buscarDados(req, res) {
             },
             graficos: {
                 usuariosPorIdade: usuariosPorIdade,
+                usuariosPorFaixaIdade: usuariosPorFaixaIdade,
                 usuariosPorData: usuariosPorData,
-                avaliacoesPorExperiencia: avaliacoesPorExperiencia,
                 personagensMaisEscolhidos: personagens,
                 fasesMaisEscolhidas: fases
             }
