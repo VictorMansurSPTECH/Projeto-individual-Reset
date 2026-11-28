@@ -14,18 +14,17 @@
         <h1>
             <div class="secao_img_logo">
                 <div class="logo">
-                    <img src="./assets/imgs/fase_lava_magmadon.jpeg" alt="logo">
+                    <img src="../assets/imgs/fase_lava_magmadon.jpeg" alt="logo">
                 </div>
                 Reset
             </div>
         </h1>
         <nav class="navegacaoSite">
             <a href="./dashboard.html" class="botoes_header">voltar a Dashboard</a>
-            <a href="../sobre.html" class="botoes_header">Sobre o Projeto</a>
         </nav>
     </header>
 
-    <!-- Conteúdo Principal / Formulário de Feedback -->
+
     <main class="container-principal">
         <div class="card-formulario">
             <h2>Avaliação de Experiência e Universo Reset</h2>
@@ -33,7 +32,6 @@
 
             <form id="formFeedback" onsubmit="enviarFeedback(event)">
 
-                <!-- Avaliação de Experiência Geral -->
                 <div class="campo">
                     <label for="experiencia">Como você avalia sua experiência geral com o projeto?</label>
                     <select id="experiencia" required>
@@ -53,12 +51,12 @@
                         <label><input type="checkbox" name="titan" value="Magmadon"> Magmadon</label>
                         <label><input type="checkbox" name="titan" value="Stench"> Stench</label>
                         <label><input type="checkbox" name="titan" value="Snipe"> Snipe</label>
-                        <label><input type="checkbox" name="titan" value="Spilo"> Spilo</label>
-                        <label><input type="checkbox" name="titan" value="Es-Electric"> Es-Electric</label>
+                        <label><input type="checkbox" name="titan" value="Spilo"> Spike</label>
+                        <label><input type="checkbox" name="titan" value="Es-Electric"> Ea-Electric</label>
                         <label><input type="checkbox" name="titan" value="Shelophante"> Shelophante</label>
                         <label><input type="checkbox" name="titan" value="Scorporilla"> Scorporilla</label>
                         <label><input type="checkbox" name="titan" value="Sludge"> Sludge</label>
-                        <label><input type="checkbox" name="titan" value="Rattler"> Rattler</label>
+                        <label><input type="checkbox" name="titan" value="Rattler"> Ratcicle</label>
                         <label><input type="checkbox" name="titan" value="Rhinoroller"> Rhinoroller</label>
                         <label><input type="checkbox" name="titan" value="Yukitopus"> Yukitopus</label>
                         <label><input type="checkbox" name="titan" value="Uka Uka"> Uka Uka</label>
@@ -66,7 +64,7 @@
                     </div>
                 </div>
 
-                <!-- Fase / Ambientação Favorita -->
+
                 <div class="campo">
                     <label for="faseFavorita">Qual fase ou ambientação dos mundos você mais gostou?</label>
                     <select id="faseFavorita" required>
@@ -79,7 +77,7 @@
                     </select>
                 </div>
 
-                <!-- O Porquê da Fase Favorita -->
+
                 <div class="campo">
                     <label for="porQueFase">Por que você escolheu essa fase/ambientação?</label>
                     <textarea id="porQueFase" rows="3" placeholder="Explique o que tornou essa ambientação especial (trilha, visual, desafios)..." required></textarea>

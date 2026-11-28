@@ -76,7 +76,7 @@ function buscarTitansMaisEscolhidos() {
     var instrucaoSql = `
         SELECT titan.nome, COUNT(*) AS total
         FROM avaliacao_titan
-        INNER JOIN titan
+        JOIN titan
             ON avaliacao_titan.fk_titan = titan.id_titan
         GROUP BY titan.id_titan, titan.nome
         ORDER BY total DESC, titan.nome ASC;

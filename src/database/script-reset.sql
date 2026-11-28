@@ -1,3 +1,4 @@
+drop database projeto_reset;
 CREATE DATABASE Projeto_reset;
 USE Projeto_reset;
 
